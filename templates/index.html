@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}Padaria Vitória | Cardápio Online{% endblock %}
+
+{% block content %}
+<section class="hero" id="inicio">
+    <div class="hero-copy">
+        <span class="eyebrow">Padaria de bairro com sabor de casa</span>
+        <h1>Fornadas quentinhas, doces caprichados e aquele café do dia.</h1>
+        <p>Escolha seus favoritos no cardápio e deixe a Padaria Vitória fazer parte da sua rotina.</p>
+        <div class="hero-actions">
+            <a class="button primary" href="#cardapio">Ver cardápio</a>
+            <a class="button secondary" href="#contato">Fazer encomenda</a>
+        </div>
+    </div>
+    <div class="hero-image">
+        <img src="{{ url_for('static', filename='img/paesespeciais/Paes_Baguete3.webp') }}" alt="Pães artesanais da Padaria Vitória">
+    </div>
+</section>
+
+<section class="section menu-section" id="cardapio">
+    <div class="section-heading">
+        <span class="eyebrow">Cardápio</span>
+        <h2>Mais pedidos da padaria</h2>
+        <p>Uma vitrine visual para o front-end. Depois, esses cards podem receber os dados direto do banco.</p>
+    </div>
+
+    <div class="category-grid">
+        <article class="category-card">
+            <img src="{{ url_for('static', filename='img/paodequeijo-01/paodequeijo.jpg') }}" alt="Pão de queijo">
+            <div>
+                <h3>Pães de Queijo</h3>
+                <p>Porções quentinhas para café da manhã ou lanche.</p>
+            </div>
+        </article>
+        <article class="category-card">
+            <img src="{{ url_for('static', filename='img/boloseco/bolo-de-cenoura.png') }}" alt="Bolo de cenoura">
+            <div>
+                <h3>Bolos Caseiros</h3>
+                <p>Receitas tradicionais com massa fofinha.</p>
+            </div>
+        </article>
+        <article class="category-card">
+            <img src="{{ url_for('static', filename='img/salgadas/torta-frango.jpg') }}" alt="Torta de frango">
+            <div>
+                <h3>Salgados</h3>
+                <p>Tortas, folhados, mini salgados e opções para festa.</p>
+            </div>
+        </article>
+    </div>
+
+    <div class="product-grid">
+        {% set vitrines = [
+            {"nome": "Baguete Especial", "preco": "12,90", "imagem": "img/paesespeciais/baguetepeq.jpeg", "tag": "Fornada do dia"},
+            {"nome": "Bolo de Cenoura", "preco": "9,90", "imagem": "img/boloseco/bolo-de-cenoura.png", "tag": "Caseiro"},
+            {"nome": "Mini Sonho", "preco": "4,50", "imagem": "img/minisonhos/minisonho-docede-leite.jpg", "tag": "Doce"},
+            {"nome": "Torta de Frango", "preco": "11,90", "imagem": "img/salgadas/torta-frango.jpg", "tag": "Salgado"},
+            {"nome": "Calzone de Calabresa", "preco": "13,90", "imagem": "img/calzone01/calzone-calabresa.jpg", "tag": "Recheado"},
+            {"nome": "Coca-Cola Lata", "preco": "5,50", "imagem": "img/bebida.01/Coca-Cola-Sabor-Original-LATA-350ML.webp", "tag": "Bebida"}
+        ] %}
+
+        {% for produto in vitrines %}
+            {% include "partials/product_card.html" %}
+        {% endfor %}
+    </div>
+
+    {% if produtos %}
+    <div class="database-products">
+        <div class="section-heading compact">
+            <span class="eyebrow">Produtos cadastrados</span>
+            <h2>Itens vindos do banco</h2>
+        </div>
+        <div class="product-grid">
+            {% for produto in produtos %}
+            <article class="product-card">
+                <div class="product-image">
+                    <img src="{{ url_for('static', filename='img/bebida.01/' ~ produto.foto) }}" alt="{{ produto.nome }}">
+                    <span>{{ produto.foto }}</span>
+                </div>
+                <div class="product-info">
+                    <h3>{{ produto.nome }}</h3>
+                    <p>Produto cadastrado no sistema.</p>
+                    <strong>R$ {{ produto.preco }}</strong>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</section>
+
+<section class="section about-section" id="sobre">
+    <div class="about-image">
+        <img src="{{ url_for('static', filename='img/bolorecheado/bolo-recheado.png') }}" alt="Bolo recheado da Padaria Vitória">
+    </div>
+    <div class="about-copy">
+        <span class="eyebrow">Sobre nós</span>
+        <h2>Uma padaria pensada para deixar o dia mais leve.</h2>
+        <p>A Padaria Vitória combina receitas de padaria tradicional com uma vitrine moderna para facilitar pedidos, encomendas e consulta de produtos.</p>
+        <div class="features">
+            <span>Fornadas frescas</span>
+            <span>Doces e salgados</span>
+            <span>Encomendas especiais</span>
+        </div>
+    </div>
+</section>
+
+<section class="section contact-section" id="contato">
+    <div>
+        <span class="eyebrow">Contato</span>
+        <h2>Peça pelo site ou fale com a padaria.</h2>
+        <p>Este bloco já deixa o front pronto para conectar futuramente com formulário, WhatsApp ou área de pedidos.</p>
+    </div>
+    <div class="contact-card">
+        <strong>Padaria Vitória</strong>
+        <span>Rua das Fornadas, 123</span>
+        <span>Segunda a domingo, 6h as 20h</span>
+        <a href="tel:+5511999999999">(11) 99999-9999</a>
+    </div>
+</section>
+{% endblock %}

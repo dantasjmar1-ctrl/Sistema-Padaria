@@ -1,0 +1,11 @@
+<article class="product-card">
+    <div class="product-image">
+        <img src="{{ url_for('static', filename=produto.imagem) }}" alt="{{ produto.nome }}">
+        <span>{{ produto.tag }}</span>
+    </div>
+    <div class="product-info">
+        <h3>{{ produto.nome }}</h3>
+        <p>Produto fresquinho para retirar na padaria.</p>
+        <strong>R$ {{ produto.preco }}</strong>
+    </div>
+</article>

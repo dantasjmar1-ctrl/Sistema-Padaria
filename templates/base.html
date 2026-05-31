@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Padaria Vitória{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header class="site-header">
+        <div class="top-bar">
+            <span>Aberto todos os dias</span>
+            <span>Encomendas, café da manhã e produtos fresquinhos</span>
+        </div>
+
+        <div class="header-content">
+            <a class="logo" href="#inicio" aria-label="Padaria Vitória">
+                <span class="logo-mark">PV</span>
+                <span>
+                    <strong>Padaria Vitória</strong>
+                    <small>fornada artesanal</small>
+                </span>
+            </a>
+
+            <form class="search" action="#" method="get">
+                <label for="busca">Buscar produtos</label>
+                <input id="busca" name="busca" type="search" placeholder="Buscar pães, bolos, bebidas...">
+                <button type="submit">Buscar</button>
+            </form>
+
+            <nav class="main-menu" aria-label="Menu principal">
+                <a href="#cardapio">Cardápio</a>
+                <a href="#sobre">Sobre nós</a>
+                <a href="#contato">Contato</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <div>
+            <a class="logo footer-logo" href="#inicio" aria-label="Padaria Vitória">
+                <span class="logo-mark">PV</span>
+                <span>
+                    <strong>Padaria Vitória</strong>
+                    <small>desde cedo com carinho</small>
+                </span>
+            </a>
+            <p>Pães, bolos, salgados e bebidas para deixar seu dia mais gostoso.</p>
+        </div>
+        <div class="footer-links">
+            <a href="#cardapio">Cardápio</a>
+            <a href="#sobre">Sobre nós</a>
+            <a href="#contato">Contato</a>
+        </div>
+    </footer>
+</body>
+</html>
