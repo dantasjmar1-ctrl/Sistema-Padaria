@@ -1,0 +1,158 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\j\u00E9ssica\\source\\repos\\ProjetoPIM\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{5FB3F5F3-6012-4494-A830-0713E6C2B1F4}|ProjetoPIM\\ProjetoPIM.csproj|c:\\users\\j\u00E9ssica\\source\\repos\\projetopim\\projetopim\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5FB3F5F3-6012-4494-A830-0713E6C2B1F4}|ProjetoPIM\\ProjetoPIM.csproj|solutionrelative:projetopim\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5FB3F5F3-6012-4494-A830-0713E6C2B1F4}|ProjetoPIM\\ProjetoPIM.csproj|c:\\users\\j\u00E9ssica\\source\\repos\\projetopim\\projetopim\\banco.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5FB3F5F3-6012-4494-A830-0713E6C2B1F4}|ProjetoPIM\\ProjetoPIM.csproj|solutionrelative:projetopim\\banco.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5FB3F5F3-6012-4494-A830-0713E6C2B1F4}|ProjetoPIM\\ProjetoPIM.csproj|c:\\users\\j\u00E9ssica\\source\\repos\\projetopim\\projetopim\\ong.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5FB3F5F3-6012-4494-A830-0713E6C2B1F4}|ProjetoPIM\\ProjetoPIM.csproj|solutionrelative:projetopim\\ong.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5FB3F5F3-6012-4494-A830-0713E6C2B1F4}|ProjetoPIM\\ProjetoPIM.csproj|c:\\users\\j\u00E9ssica\\source\\repos\\projetopim\\projetopim\\interesse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5FB3F5F3-6012-4494-A830-0713E6C2B1F4}|ProjetoPIM\\ProjetoPIM.csproj|solutionrelative:projetopim\\interesse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5FB3F5F3-6012-4494-A830-0713E6C2B1F4}|ProjetoPIM\\ProjetoPIM.csproj|c:\\users\\j\u00E9ssica\\source\\repos\\projetopim\\projetopim\\atendente.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5FB3F5F3-6012-4494-A830-0713E6C2B1F4}|ProjetoPIM\\ProjetoPIM.csproj|solutionrelative:projetopim\\atendente.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5FB3F5F3-6012-4494-A830-0713E6C2B1F4}|ProjetoPIM\\ProjetoPIM.csproj|c:\\users\\j\u00E9ssica\\source\\repos\\projetopim\\projetopim\\admin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5FB3F5F3-6012-4494-A830-0713E6C2B1F4}|ProjetoPIM\\ProjetoPIM.csproj|solutionrelative:projetopim\\admin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5FB3F5F3-6012-4494-A830-0713E6C2B1F4}|ProjetoPIM\\ProjetoPIM.csproj|c:\\users\\j\u00E9ssica\\source\\repos\\projetopim\\projetopim\\usuario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5FB3F5F3-6012-4494-A830-0713E6C2B1F4}|ProjetoPIM\\ProjetoPIM.csproj|solutionrelative:projetopim\\usuario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5FB3F5F3-6012-4494-A830-0713E6C2B1F4}|ProjetoPIM\\ProjetoPIM.csproj|c:\\users\\j\u00E9ssica\\source\\repos\\projetopim\\projetopim\\pessoa.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5FB3F5F3-6012-4494-A830-0713E6C2B1F4}|ProjetoPIM\\ProjetoPIM.csproj|solutionrelative:projetopim\\pessoa.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Banco.cs",
+              "DocumentMoniker": "C:\\Users\\j\u00E9ssica\\source\\repos\\ProjetoPIM\\ProjetoPIM\\Banco.cs",
+              "RelativeDocumentMoniker": "ProjetoPIM\\Banco.cs",
+              "ToolTip": "C:\\Users\\j\u00E9ssica\\source\\repos\\ProjetoPIM\\ProjetoPIM\\Banco.cs",
+              "RelativeToolTip": "ProjetoPIM\\Banco.cs",
+              "ViewState": "AgIAAH0DAAAAAAAAAAAiwJcDAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-08T17:11:30.926Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\j\u00E9ssica\\source\\repos\\ProjetoPIM\\ProjetoPIM\\Program.cs",
+              "RelativeDocumentMoniker": "ProjetoPIM\\Program.cs",
+              "ToolTip": "C:\\Users\\j\u00E9ssica\\source\\repos\\ProjetoPIM\\ProjetoPIM\\Program.cs",
+              "RelativeToolTip": "ProjetoPIM\\Program.cs",
+              "ViewState": "AgIAADEHAAAAAAAAAAAAAEAHAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-07T22:20:20.505Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Atendente.cs",
+              "DocumentMoniker": "C:\\Users\\j\u00E9ssica\\source\\repos\\ProjetoPIM\\ProjetoPIM\\Atendente.cs",
+              "RelativeDocumentMoniker": "ProjetoPIM\\Atendente.cs",
+              "ToolTip": "C:\\Users\\j\u00E9ssica\\source\\repos\\ProjetoPIM\\ProjetoPIM\\Atendente.cs",
+              "RelativeToolTip": "ProjetoPIM\\Atendente.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-19T17:17:02.03Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Interesse.cs",
+              "DocumentMoniker": "C:\\Users\\j\u00E9ssica\\source\\repos\\ProjetoPIM\\ProjetoPIM\\Interesse.cs",
+              "RelativeDocumentMoniker": "ProjetoPIM\\Interesse.cs",
+              "ToolTip": "C:\\Users\\j\u00E9ssica\\source\\repos\\ProjetoPIM\\ProjetoPIM\\Interesse.cs",
+              "RelativeToolTip": "ProjetoPIM\\Interesse.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-07T22:37:52.71Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Ong.cs",
+              "DocumentMoniker": "C:\\Users\\j\u00E9ssica\\source\\repos\\ProjetoPIM\\ProjetoPIM\\Ong.cs",
+              "RelativeDocumentMoniker": "ProjetoPIM\\Ong.cs",
+              "ToolTip": "C:\\Users\\j\u00E9ssica\\source\\repos\\ProjetoPIM\\ProjetoPIM\\Ong.cs",
+              "RelativeToolTip": "ProjetoPIM\\Ong.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-07T22:43:32.452Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Usuario.cs",
+              "DocumentMoniker": "C:\\Users\\j\u00E9ssica\\source\\repos\\ProjetoPIM\\ProjetoPIM\\Usuario.cs",
+              "RelativeDocumentMoniker": "ProjetoPIM\\Usuario.cs",
+              "ToolTip": "C:\\Users\\j\u00E9ssica\\source\\repos\\ProjetoPIM\\ProjetoPIM\\Usuario.cs",
+              "RelativeToolTip": "ProjetoPIM\\Usuario.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAYwB0AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-07T22:23:58.337Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Admin.cs",
+              "DocumentMoniker": "C:\\Users\\j\u00E9ssica\\source\\repos\\ProjetoPIM\\ProjetoPIM\\Admin.cs",
+              "RelativeDocumentMoniker": "ProjetoPIM\\Admin.cs",
+              "ToolTip": "C:\\Users\\j\u00E9ssica\\source\\repos\\ProjetoPIM\\ProjetoPIM\\Admin.cs",
+              "RelativeToolTip": "ProjetoPIM\\Admin.cs",
+              "ViewState": "AgIAAAQAAAAAAAAAAAAAABUAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-07T22:42:25.891Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Pessoa.cs",
+              "DocumentMoniker": "C:\\Users\\j\u00E9ssica\\source\\repos\\ProjetoPIM\\ProjetoPIM\\Pessoa.cs",
+              "RelativeDocumentMoniker": "ProjetoPIM\\Pessoa.cs",
+              "ToolTip": "C:\\Users\\j\u00E9ssica\\source\\repos\\ProjetoPIM\\ProjetoPIM\\Pessoa.cs",
+              "RelativeToolTip": "ProjetoPIM\\Pessoa.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-10T19:14:31.037Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
