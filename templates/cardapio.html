@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Padaria Vitoria | Cardápio{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+    <h1>Cardápio</h1>
+    <p>Produtos organizados por categoria para facilitar a escolha.</p>
+</section>
+
+<section class="container cardapio-container">
+    {% for categoria in categorias %}
+    <div class="categoria-bloco" id="{{ categoria.slug }}">
+        <div class="categoria-topo">
+            <div>
+                <h2>{{ categoria.titulo }}</h2>
+                <p>{{ categoria.texto }}</p>
+            </div>
+            <a href="{{ url_for('categoria', slug=categoria.slug) }}" class="link-categoria">Ver somente esta categoria</a>
+        </div>
+
+        <div class="cards produtos-grid">
+            {% for produto in produtos_por_categoria[categoria.slug] %}
+            <article class="card produto-card">
+                <h3>{{ produto.nome }}</h3>
+                <img src="{{ url_for('static', filename=produto.imagem) }}" alt="{{ produto.nome }}">
+                <p>Produto da categoria {{ categoria.titulo }}.</p>
+                <span class="preco">R$ {{ produto.preco }}</span>
+                <a href="#" class="btn-comprar">Comprar</a>
+            </article>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+</section>
+{% endblock %}

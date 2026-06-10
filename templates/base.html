@@ -3,40 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Padaria Vitória{% endblock %}</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>{% block title %}Padaria Vitoria{% endblock %}</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/LOGO_SITE/V (64 x 64 px)1.png') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
     <header class="site-header">
-        <div class="top-bar">
-            <span>Aberto todos os dias</span>
-            <span>Encomendas, café da manhã e produtos fresquinhos</span>
-        </div>
+        <a href="{{ url_for('inicio') }}" class="logo-link" aria-label="Padaria Vitoria">
+            <img src="{{ url_for('static', filename='img/LOGO_SITE/2.png') }}" class="logo" alt="Padaria Vitoria">
+        </a>
 
-        <div class="header-content">
-            <a class="logo" href="#inicio" aria-label="Padaria Vitória">
-                <span class="logo-mark">PV</span>
-                <span>
-                    <strong>Padaria Vitória</strong>
-                    <small>fornada artesanal</small>
-                </span>
-            </a>
+        <form class="search-box" action="{{ url_for('cardapio') }}" method="get">
+            <label for="busca">Buscar produtos</label>
+            <input id="busca" type="text" name="busca" placeholder="Buscar produtos...">
+            <button type="submit" aria-label="Buscar">⌕</button>
+        </form>
 
-            <form class="search" action="#" method="get">
-                <label for="busca">Buscar produtos</label>
-                <input id="busca" name="busca" type="search" placeholder="Buscar pães, bolos, bebidas...">
-                <button type="submit">Buscar</button>
-            </form>
-
-            <nav class="main-menu" aria-label="Menu principal">
-                <a href="#cardapio">Cardápio</a>
-                <a href="#sobre">Sobre nós</a>
-                <a href="#contato">Contato</a>
-            </nav>
-        </div>
+        <nav class="main-menu" aria-label="Menu principal">
+            <a href="{{ url_for('inicio') }}">Início</a>
+            <a href="{{ url_for('cardapio') }}">Cardápio</a>
+            <a href="{{ url_for('inicio') }}#pedidos">Pedidos</a>
+            <button type="button">Cadastro</button>
+        </nav>
     </header>
 
     <main>
@@ -44,20 +32,11 @@
     </main>
 
     <footer class="footer">
-        <div>
-            <a class="logo footer-logo" href="#inicio" aria-label="Padaria Vitória">
-                <span class="logo-mark">PV</span>
-                <span>
-                    <strong>Padaria Vitória</strong>
-                    <small>desde cedo com carinho</small>
-                </span>
-            </a>
-            <p>Pães, bolos, salgados e bebidas para deixar seu dia mais gostoso.</p>
-        </div>
-        <div class="footer-links">
-            <a href="#cardapio">Cardápio</a>
-            <a href="#sobre">Sobre nós</a>
-            <a href="#contato">Contato</a>
+        <div class="footer-inner">
+            <span class="footer-brand-small">Padaria</span>
+            <strong><span>Vitória</span></strong>
+            <span class="footer-detalhe"></span>
+            <p>© 2026 Padaria Vitória - Todos os direitos reservados</p>
         </div>
     </footer>
 </body>

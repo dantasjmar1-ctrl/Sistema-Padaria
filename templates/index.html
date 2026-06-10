@@ -1,121 +1,240 @@
 {% extends "base.html" %}
 
-{% block title %}Padaria Vitória | Cardápio Online{% endblock %}
+{% block title %}Padaria Vitoria | Início{% endblock %}
 
 {% block content %}
-<section class="hero" id="inicio">
-    <div class="hero-copy">
-        <span class="eyebrow">Padaria de bairro com sabor de casa</span>
-        <h1>Fornadas quentinhas, doces caprichados e aquele café do dia.</h1>
-        <p>Escolha seus favoritos no cardápio e deixe a Padaria Vitória fazer parte da sua rotina.</p>
-        <div class="hero-actions">
-            <a class="button primary" href="#cardapio">Ver cardápio</a>
-            <a class="button secondary" href="#contato">Fazer encomenda</a>
-        </div>
-    </div>
-    <div class="hero-image">
-        <img src="{{ url_for('static', filename='img/paesespeciais/Paes_Baguete3.webp') }}" alt="Pães artesanais da Padaria Vitória">
-    </div>
+<section class="banner" id="inicio">
+    <img src="{{ url_for('static', filename='img/LOGO_SITE/banner-vitoria-hero.png.jpeg') }}" alt="Seu momento mais gostoso começa com a Padaria Vitória" onerror="this.onerror=null; this.src='{{ url_for('static', filename='img/LOGO_SITE/banner.png2.png') }}';">
 </section>
 
-<section class="section menu-section" id="cardapio">
-    <div class="section-heading">
-        <span class="eyebrow">Cardápio</span>
-        <h2>Mais pedidos da padaria</h2>
-        <p>Uma vitrine visual para o front-end. Depois, esses cards podem receber os dados direto do banco.</p>
-    </div>
+<section class="lanches-metro" id="pedidos" aria-label="Lanches de metro">
+    <button class="seta esquerda" type="button" aria-label="Anterior">&#10094;</button>
 
-    <div class="category-grid">
-        <article class="category-card">
-            <img src="{{ url_for('static', filename='img/paodequeijo-01/paodequeijo.jpg') }}" alt="Pão de queijo">
-            <div>
-                <h3>Pães de Queijo</h3>
-                <p>Porções quentinhas para café da manhã ou lanche.</p>
-            </div>
+    <div class="lanches-wrapper">
+        <article class="lanche-card">
+            <img src="{{ url_for('static', filename='img/LOGO_SITE/metro2.jpg') }}" alt="Lanche de metro tradicional">
         </article>
-        <article class="category-card">
-            <img src="{{ url_for('static', filename='img/boloseco/bolo-de-cenoura.png') }}" alt="Bolo de cenoura">
-            <div>
-                <h3>Bolos Caseiros</h3>
-                <p>Receitas tradicionais com massa fofinha.</p>
-            </div>
+        <article class="lanche-card">
+            <img src="{{ url_for('static', filename='img/LOGO_SITE/Lanche de metro (2).png') }}" alt="Lanche de metro">
         </article>
-        <article class="category-card">
-            <img src="{{ url_for('static', filename='img/salgadas/torta-frango.jpg') }}" alt="Torta de frango">
-            <div>
-                <h3>Salgados</h3>
-                <p>Tortas, folhados, mini salgados e opções para festa.</p>
-            </div>
+        <article class="lanche-card">
+            <img src="{{ url_for('static', filename='img/LOGO_SITE/Lanche de metro 3.png') }}" alt="Lanche de metro especial">
+        </article>
+        <article class="lanche-card">
+            <img src="{{ url_for('static', filename='img/LOGO_SITE/lanchinho de metro.png') }}" alt="Lanchinho de metro">
+        </article>
+        <article class="lanche-card">
+            <img src="{{ url_for('static', filename='img/LOGO_SITE/LANCHE (1000 x 1000 px).png') }}" alt="Lanche de metro recheado">
+        </article>
+        <article class="lanche-card">
+            <img src="{{ url_for('static', filename='img/LOGO_SITE/LANCHE (800 x 800 px).png') }}" alt="Lanche de metro da padaria">
         </article>
     </div>
 
-    <div class="product-grid">
-        {% set vitrines = [
-            {"nome": "Baguete Especial", "preco": "12,90", "imagem": "img/paesespeciais/baguetepeq.jpeg", "tag": "Fornada do dia"},
-            {"nome": "Bolo de Cenoura", "preco": "9,90", "imagem": "img/boloseco/bolo-de-cenoura.png", "tag": "Caseiro"},
-            {"nome": "Mini Sonho", "preco": "4,50", "imagem": "img/minisonhos/minisonho-docede-leite.jpg", "tag": "Doce"},
-            {"nome": "Torta de Frango", "preco": "11,90", "imagem": "img/salgadas/torta-frango.jpg", "tag": "Salgado"},
-            {"nome": "Calzone de Calabresa", "preco": "13,90", "imagem": "img/calzone01/calzone-calabresa.jpg", "tag": "Recheado"},
-            {"nome": "Coca-Cola Lata", "preco": "5,50", "imagem": "img/bebida.01/Coca-Cola-Sabor-Original-LATA-350ML.webp", "tag": "Bebida"}
-        ] %}
+    <button class="seta direita" type="button" aria-label="Próximo">&#10095;</button>
+</section>
 
-        {% for produto in vitrines %}
-            {% include "partials/product_card.html" %}
+<section class="container" id="categorias">
+    <div class="cards categoria-cards">
+        {% for categoria in categorias %}
+        <a class="card categoria-card" href="{{ url_for('categoria', slug=categoria.slug) }}">
+            <h3>{{ categoria.titulo }}</h3>
+            <img src="{{ url_for('static', filename=categoria.imagem) }}" alt="{{ categoria.titulo }}">
+            <p>{{ categoria.texto }}</p>
+            <span class="btn-comprar">Ver produtos</span>
+        </a>
         {% endfor %}
     </div>
-
-    {% if produtos %}
-    <div class="database-products">
-        <div class="section-heading compact">
-            <span class="eyebrow">Produtos cadastrados</span>
-            <h2>Itens vindos do banco</h2>
-        </div>
-        <div class="product-grid">
-            {% for produto in produtos %}
-            <article class="product-card">
-                <div class="product-image">
-                    <img src="{{ url_for('static', filename='img/bebida.01/' ~ produto.foto) }}" alt="{{ produto.nome }}">
-                    <span>{{ produto.foto }}</span>
-                </div>
-                <div class="product-info">
-                    <h3>{{ produto.nome }}</h3>
-                    <p>Produto cadastrado no sistema.</p>
-                    <strong>R$ {{ produto.preco }}</strong>
-                </div>
-            </article>
-            {% endfor %}
-        </div>
-    </div>
-    {% endif %}
 </section>
 
-<section class="section about-section" id="sobre">
-    <div class="about-image">
-        <img src="{{ url_for('static', filename='img/bolorecheado/bolo-recheado.png') }}" alt="Bolo recheado da Padaria Vitória">
-    </div>
-    <div class="about-copy">
-        <span class="eyebrow">Sobre nós</span>
-        <h2>Uma padaria pensada para deixar o dia mais leve.</h2>
-        <p>A Padaria Vitória combina receitas de padaria tradicional com uma vitrine moderna para facilitar pedidos, encomendas e consulta de produtos.</p>
-        <div class="features">
-            <span>Fornadas frescas</span>
-            <span>Doces e salgados</span>
-            <span>Encomendas especiais</span>
-        </div>
-    </div>
+<section class="diferenciais" aria-label="Diferenciais da Padaria Vitória">
+    <article class="diferencial-item">
+        <span class="diferencial-icone" aria-hidden="true">
+            <svg viewBox="0 0 64 64" focusable="false">
+                <path d="M32 8l5 4 6-1 3 6 6 3-1 6 4 5-4 5 1 6-6 3-3 6-6-1-5 4-5-4-6 1-3-6-6-3 1-6-4-5 4-5-1-6 6-3 3-6 6 1z"/>
+                <circle cx="32" cy="31" r="10"/>
+                <path d="M32 25l2 4 4 .5-3 3 .8 4.5-3.8-2.2-3.8 2.2.8-4.5-3-3 4-.5z"/>
+                <path d="M23 51l-5 9 10-4 4 7 4-7 10 4-5-9"/>
+            </svg>
+        </span>
+        <h3>Qualidade Garantida</h3>
+        <p>Produtos frescos feitos todos os dias.</p>
+    </article>
+
+    <article class="diferencial-item">
+        <span class="diferencial-icone" aria-hidden="true">
+            <svg viewBox="0 0 64 64" focusable="false">
+                <path d="M12 38c4-15 17-27 31-27 7 0 12 5 12 12 0 16-18 29-35 29-7 0-10-5-8-14z"/>
+                <path d="M24 15c7 3 13 8 18 15"/>
+                <path d="M16 27c8 2 15 6 21 12"/>
+                <path d="M35 11c6 4 10 9 13 16"/>
+            </svg>
+        </span>
+        <h3>Ingredientes Selecionados</h3>
+        <p>Matéria-prima de qualidade para o melhor sabor.</p>
+    </article>
+
+    <article class="diferencial-item">
+        <span class="diferencial-icone" aria-hidden="true">
+            <svg viewBox="0 0 64 64" focusable="false">
+                <path d="M8 20h30v24H8z"/>
+                <path d="M38 27h9l8 8v9H38z"/>
+                <path d="M16 44a6 6 0 1 0 12 0"/>
+                <path d="M44 44a6 6 0 1 0 12 0"/>
+                <path d="M47 27v8h8"/>
+            </svg>
+        </span>
+        <h3>Entrega Rápida</h3>
+        <p>Mais agilidade e comodidade para você.</p>
+    </article>
+
+    <article class="diferencial-item">
+        <span class="diferencial-icone" aria-hidden="true">
+            <svg viewBox="0 0 64 64" focusable="false">
+                <path d="M32 54S10 39 10 23c0-8 6-13 13-13 4 0 8 2 11 6 3-4 7-6 11-6 7 0 13 5 13 13 0 16-26 31-26 31z"/>
+            </svg>
+        </span>
+        <h3>Feito com Amor</h3>
+        <p>Dedicação e carinho em cada receita.</p>
+    </article>
 </section>
 
-<section class="section contact-section" id="contato">
-    <div>
-        <span class="eyebrow">Contato</span>
-        <h2>Peça pelo site ou fale com a padaria.</h2>
-        <p>Este bloco já deixa o front pronto para conectar futuramente com formulário, WhatsApp ou área de pedidos.</p>
-    </div>
-    <div class="contact-card">
-        <strong>Padaria Vitória</strong>
-        <span>Rua das Fornadas, 123</span>
-        <span>Segunda a domingo, 6h as 20h</span>
-        <a href="tel:+5511999999999">(11) 99999-9999</a>
-    </div>
+<section class="info-final" aria-label="Informações da padaria">
+    <article class="info-card sobre" id="sobre">
+        <span class="info-icone info-icone-grande" aria-hidden="true">
+            <svg viewBox="0 0 64 64" focusable="false">
+                <path d="M32 52V14"/>
+                <path d="M32 24c-9 0-16-5-20-13 10-1 17 3 20 13z"/>
+                <path d="M32 31c9 0 16-5 20-13-10-1-17 3-20 13z"/>
+                <path d="M32 40c-8 0-14-4-18-11 9-1 15 3 18 11z"/>
+                <path d="M32 46c8 0 14-4 18-11-9-1-15 3-18 11z"/>
+            </svg>
+        </span>
+        <div>
+            <h2>Sobre nós</h2>
+            <span class="titulo-detalhe"></span>
+            <p>
+                A Padaria Vitória oferece produtos frescos e de qualidade todos os dias, preparados com dedicação,
+                carinho e tradição. Nosso compromisso é levar até você sabor, variedade e excelência em cada detalhe.
+            </p>
+        </div>
+    </article>
+
+    <article class="info-card contato" id="contato">
+        <span class="info-icone info-icone-grande" aria-hidden="true">
+            <svg viewBox="0 0 64 64" focusable="false">
+                <path d="M22 12l8 10-6 6c4 8 10 14 18 18l6-6 10 8c-1 6-5 10-11 10-20 0-43-23-43-43 0-6 4-10 10-11z"/>
+                <path d="M42 14c5 2 9 6 11 11"/>
+                <path d="M40 24c2 1 4 3 5 5"/>
+            </svg>
+        </span>
+        <div>
+            <h2>Fale conosco</h2>
+            <span class="titulo-detalhe"></span>
+            <div class="contato-lista">
+                <p>
+                    <span class="contato-icone" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" focusable="false"><path d="M12 21s7-6.2 7-12A7 7 0 0 0 5 9c0 5.8 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>
+                    </span>
+                    <strong>Endereço:</strong> Av Victor Civita, 1322 - Osasco
+                </p>
+                <p>
+                    <span class="contato-icone" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" focusable="false"><path d="M8 4l3 4-2 2c1.7 3.2 4 5.5 7.2 7.2l2-2 3.8 3c-.4 2.4-2 3.8-4.4 3.8C10.2 22 2 13.8 2 6.4 2 4 3.6 2.4 6 2z"/></svg>
+                    </span>
+                    <strong>WhatsApp:</strong> (11) 918468385
+                </p>
+                <p>
+                    <span class="contato-icone" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M12 7v6l4 2"/></svg>
+                    </span>
+                    <strong>Funcionamento:</strong>
+                    <span class="funcionamento-horarios">
+                        <span>Seg-Sáb: 05:00 às 21:00</span>
+                        <span>Domingo: 05:30 às 13:00</span>
+                    </span>
+                </p>
+            </div>
+        </div>
+    </article>
 </section>
+
+<script>
+const wrapper = document.querySelector(".lanches-wrapper");
+const btnDireita = document.querySelector(".direita");
+const btnEsquerda = document.querySelector(".esquerda");
+const cardsCarrossel = document.querySelectorAll(".lanche-card");
+const areaCarrossel = document.querySelector(".lanches-metro");
+
+let indiceCarrossel = 0;
+let autoplayCarrossel = null;
+
+function itensVisiveis() {
+    if (window.innerWidth <= 520) {
+        return 1;
+    }
+
+    if (window.innerWidth <= 760) {
+        return 2;
+    }
+
+    return 3;
+}
+
+function larguraCard() {
+    const primeiroCard = cardsCarrossel[0];
+    const estilos = window.getComputedStyle(wrapper);
+    const gap = parseFloat(estilos.columnGap || estilos.gap || 0);
+    return primeiroCard.getBoundingClientRect().width + gap;
+}
+
+function maximoIndice() {
+    return Math.max(0, cardsCarrossel.length - itensVisiveis());
+}
+
+function atualizarCarrossel() {
+    indiceCarrossel = Math.min(indiceCarrossel, maximoIndice());
+    wrapper.style.transform = `translateX(-${indiceCarrossel * larguraCard()}px)`;
+    btnEsquerda.disabled = indiceCarrossel === 0;
+    btnDireita.disabled = indiceCarrossel === maximoIndice();
+}
+
+function proximoSlide() {
+    indiceCarrossel = indiceCarrossel >= maximoIndice() ? 0 : indiceCarrossel + 1;
+    atualizarCarrossel();
+}
+
+function slideAnterior() {
+    indiceCarrossel = indiceCarrossel <= 0 ? maximoIndice() : indiceCarrossel - 1;
+    atualizarCarrossel();
+}
+
+function iniciarAutoplay() {
+    pararAutoplay();
+    autoplayCarrossel = setInterval(proximoSlide, 3000);
+}
+
+function pararAutoplay() {
+    if (autoplayCarrossel) {
+        clearInterval(autoplayCarrossel);
+    }
+}
+
+btnDireita.addEventListener("click", () => {
+    proximoSlide();
+    iniciarAutoplay();
+});
+
+btnEsquerda.addEventListener("click", () => {
+    slideAnterior();
+    iniciarAutoplay();
+});
+
+areaCarrossel.addEventListener("mouseenter", pararAutoplay);
+areaCarrossel.addEventListener("mouseleave", iniciarAutoplay);
+window.addEventListener("resize", atualizarCarrossel);
+
+atualizarCarrossel();
+iniciarAutoplay();
+</script>
 {% endblock %}
