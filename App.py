@@ -157,9 +157,14 @@ CATEGORIAS = [
 
 PRODUTOS_POR_CATEGORIA = {
     "paes-frescos": [
-        {"nome": "Pão francês", "imagem": "img/LOGO_SITE/pães.jpg", "preco": "0,90"},
-        {"nome": "Pão de leite", "imagem": "img/LOGO_SITE/pães.jpg", "preco": "1,20"},
-        {"nome": "Pão integral", "imagem": "img/LOGO_SITE/pães.jpg", "preco": "1,50"},
+        {"nome": "Pão Francês", "imagem": "img/paesespeciais/pao_frances.jpg", "preco": "1,00"},
+        {"nome": "Pão de Milho", "imagem": "img/paesespeciais/pao_milho.jpg.jpeg", "preco": "1,50"},
+        {"nome": "Pão Carteira", "imagem": "img/paesespeciais/pao_carteira.jpg.jpeg", "preco": "1,50"},
+        {"nome": "Pão de Banha", "imagem": "img/paesespeciais/pao_banha.jpg.jpg", "preco": "1,50"},
+        {"nome": "Pão Português", "imagem": "img/paesespeciais/pao_portugues.jpg.jpg", "preco": "1,25"},
+        {"nome": "Pão Amanteigado", "imagem": "img/paesespeciais/pao_amanteigado.jpg.jpg", "preco": "1,50"},
+        {"nome": "Baguete Parmesão Pequena", "imagem": "img/paesespeciais/baguete_pequena.jpg.jpeg", "preco": "2,50"},
+        {"nome": "Baguete Parmesão Grande", "imagem": "img/paesespeciais/baguete_grande.jpg.webp", "preco": "8,90"},
     ],
     "frios-premium": [
         {"nome": "Presunto fatiado", "imagem": "img/LOGO_SITE/frios.png", "preco": "8,90"},
@@ -172,9 +177,7 @@ PRODUTOS_POR_CATEGORIA = {
         {"nome": "Sobremesa especial", "imagem": "img/LOGO_SITE/receitas-de-tortas-doces.jpg", "preco": "12,90"},
     ],
     "sonhos-recheados": [
-        {"nome": "Sonho de creme", "imagem": "img/LOGO_SITE/sonho.png", "preco": "6,00"},
-        {"nome": "Sonho de doce de leite", "imagem": "img/LOGO_SITE/sonho.png", "preco": "6,50"},
-        {"nome": "Sonho de chocolate", "imagem": "img/LOGO_SITE/sonho.png", "preco": "6,50"},
+        {"nome": "Sonho", "imagem": "img/paesdoces/sonho.jpg", "preco": "4,50"},
     ],
     "lanches-de-metro": [
         {"nome": "Lanche de metro tradicional", "imagem": "img/LOGO_SITE/metro2.jpg", "preco": "89,90"},
@@ -212,9 +215,11 @@ PRODUTOS_POR_CATEGORIA = {
         {"nome": "Bolo de cenoura", "imagem": "img/LOGO_SITE/bolo.seco.png", "preco": "22,90"},
     ],
     "paes-doces": [
-        {"nome": "Pão doce de creme", "imagem": "img/LOGO_SITE/pao-doce.png", "preco": "5,90"},
-        {"nome": "Rosquinha doce", "imagem": "img/LOGO_SITE/pao-doce.png", "preco": "4,90"},
-        {"nome": "Pão doce com coco", "imagem": "img/LOGO_SITE/pao-doce.png", "preco": "6,90"},
+        {"nome": "Língua de Sogra", "imagem": "img/paesdoces/lingua_sogra.jpg.jpg", "preco": "6,90"},
+        {"nome": "Bisnaga com Açúcar", "imagem": "img/paesdoces/bisnaga_acucar.jpg.png", "preco": "1,00"},
+        {"nome": "Bisnaga de Coco", "imagem": "img/paesdoces/bisnaga_coco.jpg.webp", "preco": "1,00"},
+        {"nome": "Cueca Virada", "imagem": "img/paesdoces/Cueca Virada.webp", "preco": "1,50"},
+        {"nome": "Rosca Doce", "imagem": "img/paesdoces/rosca_doce.jpg.png", "preco": "2,50"},
     ],
     "paes-especiais": [
         {"nome": "Pão especial", "imagem": "img/LOGO_SITE/pães-especiais.png", "preco": "9,90"},
@@ -257,9 +262,9 @@ PRODUTOS_POR_CATEGORIA = {
         {"nome": "Calzone de queijo", "imagem": "img/LOGO_SITE/calzone.png", "preco": "12,90"},
     ],
     "paes-queijo": [
-        {"nome": "Pão de queijo", "imagem": "img/LOGO_SITE/Pao-de-queijo.jpg", "preco": "6,50"},
-        {"nome": "Pão de queijo grande", "imagem": "img/LOGO_SITE/Pao-de-queijo.jpg", "preco": "9,90"},
-        {"nome": "Chipa", "imagem": "img/LOGO_SITE/Pao-de-queijo.jpg", "preco": "5,90"},
+        {"nome": "Pão de Queijo", "imagem": "img/paodequeijo-01/pao_queijo.jpg.jpg", "preco": "4,50"},
+        {"nome": "Chipa", "imagem": "img/paodequeijo-01/chipa.jpg.jpeg", "preco": "4,90"},
+        {"nome": "Pão de Queijo Grande", "imagem": "img/paodequeijo-01/pao_queijo_grande.jpg.jpeg", "preco": "6,50"},
     ],
     "bebidas": [
         {"nome": "Coca-Cola 2L", "imagem": "img/bebida.01/coca_2l.jpg.avif", "preco": "16,90"},
@@ -290,6 +295,20 @@ PRODUTOS_POR_CATEGORIA = {
         {"nome": "Refrigerante Coca-Cola vidro", "imagem": "img/bebida.01/coca_vidro.jpg.jpg", "preco": "6,50"},
         {"nome": "Refrigerante Coca-Cola Café", "imagem": "img/bebida.01/coca_cafe.jpg.webp", "preco": "4,50"},
         {"nome": "Água mineral Crystal", "imagem": "img/bebida.01/agua_crystal.jpg.jpg", "preco": "4,00"},
+        {"nome": "Água com Gás", "imagem": "img/bebida.01/agua_com_gas.jpg.jpg", "preco": "4,00"},
+        {"nome": "H2OH", "imagem": "img/bebida.01/h2oh.jpg", "preco": "6,50"},
+        {"nome": "Powerade", "imagem": "img/bebida.01/powerade.jpg", "preco": "6,90"},
+        {"nome": "Gatorade", "imagem": "img/bebida.01/gatorade.jpg.png", "preco": "9,90"},
+        {"nome": "Monster", "imagem": "img/bebida.01/monster.jpg.jpg", "preco": "13,90"},
+        {"nome": "Red Bull", "imagem": "img/bebida.01/redbull.jpg.png", "preco": "13,90"},
+        {"nome": "Guaraviton", "imagem": "img/bebida.01/guaraviton.jpg.webp", "preco": "4,50"},
+        {"nome": "Del Valle 1L", "imagem": "img/bebida.01/delvalle_1l.jpg.png", "preco": "12,90"},
+        {"nome": "Suco Del Valle 450ml", "imagem": "img/bebida.01/delvalle_450ml.jpg.webp", "preco": "4,90"},
+        {"nome": "Suco Del Valle Lata", "imagem": "img/bebida.01/delvalle_lata.jpg.webp", "preco": "5,90"},
+        {"nome": "Suco Maratá 200ml", "imagem": "img/bebida.01/marata_200ml.jpg", "preco": "4,00"},
+        {"nome": "Toddynho", "imagem": "img/bebida.01/toddynho.jpg.png", "preco": "4,50"},
+        {"nome": "Kapo", "imagem": "img/bebida.01/kapo.jpg.webp", "preco": "4,50"},
+        {"nome": "Corona", "imagem": "img/bebida.01/corona.jpg.png", "preco": "10,90"},
          ],
     "mercearia": [
         {"nome": "Arroz", "imagem": "img/LOGO_SITE/padaria_interior.png", "preco": "24,90"},
@@ -326,11 +345,28 @@ def categoria(slug):
 
     if categoria_encontrada is None:
         return redirect(url_for("cardapio"))
+    
+    cursor.execute("""
+        SELECT p.nome, p.imagem, p.preco, p.unidade_venda
+        FROM Produto p
+        INNER JOIN Categoria c ON c.id_categoria = p.id_categoria
+        WHERE c.slug = ?
+    """, slug)
+
+    produtos_db = []
+    for row in cursor.fetchall():
+        preco_formatado = f"{row.preco:.2f}".replace('.',',')
+        produtos_db.append({
+            "nome": row.nome,
+            "imagem": row.imagem if row.imagem else "img/LOGO_SITE/padaria_interior.png",
+            "preco": preco_formatado,
+            "unidade_venda": row.unidade_venda,
+        })
 
     return render_template(
         "categoria.html",
         categoria=categoria_encontrada,
-        produtos=PRODUTOS_POR_CATEGORIA.get(slug, []),
+        produtos=produtos_db,
         categorias=CATEGORIAS,
     )
 

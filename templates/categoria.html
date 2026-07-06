@@ -19,8 +19,8 @@
             <h3>{{ produto.nome }}</h3>
             <img src="{{ url_for('static', filename=produto.imagem) }}" alt="{{ produto.nome }}">
             <p>Produto selecionado da categoria {{ categoria.titulo }}.</p>
-            <span class="preco">R$ {{ produto.preco }}</span>
-            <a href="#" class="btn-comprar">Comprar</a>
+            <span class="preco">R$ {{ produto.preco }}{% if produto.unidade_venda == 'peso' %}/kg{% endif %}</span>
+            <button class="btn-comprar add-cart" type="button" data-name="{{ produto.nome }}" data-price="{{ produto.preco }}">Adicionar ao carrinho</button>
         </article>
         {% endfor %}
     </div>

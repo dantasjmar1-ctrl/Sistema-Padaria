@@ -25,7 +25,41 @@
             <a href="{{ url_for('inicio') }}#pedidos">Pedidos</a>
             <button type="button">Cadastro</button>
         </nav>
+
+        <button class="cart-toggle" type="button" aria-label="Abrir carrinho">
+            <span class="cart-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false">
+                    <path d="M3 4h2l2.5 11h10l2-7H7"/>
+                    <circle cx="10" cy="20" r="1.8"/>
+                    <circle cx="18" cy="20" r="1.8"/>
+                </svg>
+            </span>
+            <span class="cart-count">0</span>
+        </button>
     </header>
+
+    <aside class="cart-panel" aria-label="Carrinho de compras">
+        <div class="cart-header">
+            <div>
+                <span class="cart-kicker">Seu pedido</span>
+                <h2>Carrinho</h2>
+            </div>
+            <button class="cart-close" type="button" aria-label="Fechar carrinho">×</button>
+        </div>
+
+        <div class="cart-items">
+            <p class="cart-empty">Seu carrinho está vazio.</p>
+        </div>
+
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total</span>
+                <strong>R$ 0,00</strong>
+            </div>
+            <button class="cart-finish" type="button">Finalizar pedido</button>
+        </div>
+    </aside>
+    <div class="cart-overlay"></div>
 
     <main>
         {% block content %}{% endblock %}
@@ -39,5 +73,6 @@
             <p>© 2026 Padaria Vitória - Todos os direitos reservados</p>
         </div>
     </footer>
+    <script src="{{ url_for('static', filename='js/cart.js') }}"></script>
 </body>
 </html>
