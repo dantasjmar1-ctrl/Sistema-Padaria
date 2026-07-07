@@ -20,6 +20,9 @@
             <img src="{{ url_for('static', filename=produto.imagem) }}" alt="{{ produto.nome }}">
             <p>Produto selecionado da categoria {{ categoria.titulo }}.</p>
             <span class="preco">R$ {{ produto.preco }}{% if produto.unidade_venda == 'peso' %}/kg{% endif %}</span>
+            {% if produto.descricao %}
+            <p class="descricao-produto">{{ produto.descricao }}</p>
+            {% endif %}
             <button class="btn-comprar add-cart" type="button" data-name="{{ produto.nome }}" data-price="{{ produto.preco }}">Adicionar ao carrinho</button>
         </article>
         {% endfor %}

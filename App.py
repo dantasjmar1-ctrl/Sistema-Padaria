@@ -17,9 +17,9 @@ print("Conexão realizada com sucesso!")
 CATEGORIAS = [
     {
         "slug": "paes-frescos",
-        "titulo": "Pães Frescos",
-        "imagem": "img/LOGO_SITE/pães.jpg",
-        "texto": "Produzidos diariamente com ingredientes selecionados",
+        "titulo": "Pães Especiais",
+        "imagem": "img/LOGO_SITE/pães-especiais.png",
+        "texto": "Pães artesanais feitos na casa, com tradição e muito sabor",
     },
     {
         "slug": "frios-premium",
@@ -88,10 +88,10 @@ CATEGORIAS = [
         "texto": "Sabor delicado e textura macia para momentos especiais",
     },
     {
-        "slug": "paes-especiais",
-        "titulo": "Pães Especiais",
-        "imagem": "img/LOGO_SITE/pães-especiais.png",
-        "texto": "Pães artesanais feitos na casa, com tradição e muito sabor",
+        "slug": "pizzas",
+        "titulo": "Pizzas",
+        "imagem": "img/LOGO_SITE/padaria_interior.png",
+        "texto": "Fatias ou pizza inteira, sempre fresquinha",
     },
     {
         "slug": "broas-artesanais",
@@ -118,8 +118,8 @@ CATEGORIAS = [
         "texto": "Delicadeza e sabor em porções ideais para momentos especiais",
     },
     {
-        "slug": "mini-croissant",
-        "titulo": "Mini Croissant",
+        "slug": "mini-Folhados",
+        "titulo": "Mini Folhados",
         "imagem": "img/LOGO_SITE/MINI-CROISSANT.jpg",
         "texto": "Pequenas porções cheias de sabor para qualquer ocasião",
     },
@@ -347,7 +347,7 @@ def categoria(slug):
         return redirect(url_for("cardapio"))
     
     cursor.execute("""
-        SELECT p.nome, p.imagem, p.preco, p.unidade_venda
+        SELECT p.nome, p.imagem, p.preco, p.unidade_venda, p.descricao
         FROM Produto p
         INNER JOIN Categoria c ON c.id_categoria = p.id_categoria
         WHERE c.slug = ?
@@ -361,6 +361,7 @@ def categoria(slug):
             "imagem": row.imagem if row.imagem else "img/LOGO_SITE/padaria_interior.png",
             "preco": preco_formatado,
             "unidade_venda": row.unidade_venda,
+            "descricao" : row.descricao,
         })
 
     return render_template(

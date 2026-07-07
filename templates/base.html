@@ -23,7 +23,7 @@
             <a href="{{ url_for('inicio') }}">Início</a>
             <a href="{{ url_for('cardapio') }}">Cardápio</a>
             <a href="{{ url_for('inicio') }}#pedidos">Pedidos</a>
-            <button type="button">Cadastro</button>
+            <button type="button" id="btn-cadastro">Cadastro</button>
         </nav>
 
         <button class="cart-toggle" type="button" aria-label="Abrir carrinho">
@@ -74,5 +74,9 @@
         </div>
     </footer>
     <script src="{{ url_for('static', filename='js/cart.js') }}"></script>
+    <script>
+        document.getElementById('btn-cadastro').addEventListener('click', function() {window.location.href = "{{ url_for('cadastro') }}";
+        });
+    </script>
 </body>
 </html>
