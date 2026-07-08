@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Padaria Vitoria | Login{% endblock %}
+{% block content %}
+
+<section class="container">
+    <div class="form-card">
+        <h1>Entrar na conta</h1>
+
+        <form method="POST" action="{{ url_for('login') }}">
+            <div class="form-linha">
+                <div class="form-campo">
+                    <label>Email</label>
+                    <input type="email" name="email" required>
+                </div>
+                <div class="form-campo">
+                    <label>Senha</label>
+                    <input type="password" name="senha" required>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-comprar btn-cadastrar">Entrar</button>
+        </form>
+    </div>
+</section>
+{% endblock %}

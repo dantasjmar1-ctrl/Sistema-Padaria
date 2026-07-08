@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Padaria Vitoria | Meus Pedidos{% endblock %}
+{% block content %}
+
+<section class="container">
+    <div class="estado-vazio">
+        <div class="estado-vazio-icone">
+            <svg viewBox="0 0 24 24" focusable="false">
+                <path d="M3 4h2l2.5 11h10l2-7H7"/>
+                <circle cx="10" cy="20" r="1.8"/>
+                <circle cx="18" cy="20" r="1.8"/>
+            </svg>
+        </div>
+        <h1>Meus pedidos</h1>
+        <p>Você ainda não fez nenhum pedido por aqui. Que tal dar uma olhada no cardápio?</p>
+        <a href="{{ url_for('cardapio') }}" class="btn-comprar">Ver cardápio</a>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Padaria Vitoria | Meu Perfil{% endblock %}
+{% block content %}
+
+<section class="container">
+    <div class="form-card">
+        <h1>Meu perfil</h1>
+
+        <form method="POST" action="{{ url_for('perfil') }}">
+            <div class="form-linha">
+                <div class="form-campo campo-grande">
+                    <label>Nome completo</label>
+                    <input type="text" name="nome" value="{{ cliente.nome }}" required>
+                </div>
+                <div class="form-campo">
+                    <label>Telefone</label>
+                    <input type="text" name="telefone" value="{{ cliente.telefone }}" required>
+                </div>
+            </div>
+
+            <div class="form-linha">
+                <div class="form-campo campo-grande">
+                    <label>Email</label>
+                    <input type="email" name="email" value="{{ cliente.email }}" required>
+                </div>
+                <div class="form-campo">
+                    <label>CPF</label>
+                    <input type="text" value="{{ cliente.cpf }}" disabled>
+                </div>
+            </div>
+
+            <div class="form-linha">
+                <div class="form-campo">
+                    <label>Data de nascimento</label>
+                    <input type="date" value="{{ cliente.data_nascimento }}" disabled>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-comprar btn-cadastrar">Salvar alterações</button>
+        </form>
+    </div>
+</section>
+{% endblock %}

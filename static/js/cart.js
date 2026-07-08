@@ -5,7 +5,23 @@ const cartOverlay = document.querySelector(".cart-overlay");
 const cartItems = document.querySelector(".cart-items");
 const cartCount = document.querySelector(".cart-count");
 const cartTotal = document.querySelector(".cart-total strong");
-const cart = new Map();
+const cart = carregarCarrinho();
+
+function carregarCarrinho() {
+    const salvo = localStorage.getItem("carrinhoPadaria");
+    if (salvo) {
+        try {
+            return new Map(JSON.parse(salvo));
+        } catch (erro) {
+            return new Map();
+        }
+    }
+    return new Map();
+}
+
+function salvarCarrinho() {
+    localStorage.setItem("carrinhoPadaria", JSON.stringify(Array.from(cart.entries())));
+}
 
 function parsePrice(value) {
     return Number(String(value).replace(".", "").replace(",", ".")) || 0;
@@ -27,6 +43,9 @@ function closeCart() {
 }
 
 function renderCart() {
+    function renderCart() {
+    salvarCarrinho();
+    const items = Array.from(cart.values());}
     const items = Array.from(cart.values());
     const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0);
     const totalPrice = items.reduce((sum, item) => sum + item.price * item.quantity, 0);

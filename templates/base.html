@@ -23,7 +23,19 @@
             <a href="{{ url_for('inicio') }}">Início</a>
             <a href="{{ url_for('cardapio') }}">Cardápio</a>
             <a href="{{ url_for('inicio') }}#pedidos">Pedidos</a>
-            <button type="button" id="btn-cadastro">Cadastro</button>
+            {% if session.cliente_nome %}
+                <div class="menu-perfil">
+                    <button type="button" id="btn-perfil" class="cliente-logado">Olá, {{ session.cliente_nome }}</button>
+                    <div class="dropdown-perfil" id="dropdown-perfil">
+                        <a href="{{ url_for('perfil') }}">Editar perfil</a>
+                        <a href="{{ url_for('pedidos') }}">Meus pedidos</a>
+                        <a href="{{ url_for('logout') }}">Sair</a>
+                    </div>
+                </div>
+            {% else %}
+                <button type="button" id="btn-login">Login</button>
+                <button type="button" id="btn-cadastro">Cadastro</button>
+            {% endif %}
         </nav>
 
         <button class="cart-toggle" type="button" aria-label="Abrir carrinho">
@@ -75,8 +87,26 @@
     </footer>
     <script src="{{ url_for('static', filename='js/cart.js') }}"></script>
     <script>
-        document.getElementById('btn-cadastro').addEventListener('click', function() {window.location.href = "{{ url_for('cadastro') }}";
-        });
+        const btnLogin = document.getElementById('btn-login');
+        if (btnLogin) {
+            btnLogin.addEventListener('click', function() {
+                window.location.href = "{{ url_for('login') }}";
+            });
+        }
+
+        const btnCadastro = document.getElementById('btn-cadastro');
+        if (btnCadastro) {
+            btnCadastro.addEventListener('click', function() {
+                window.location.href = "{{ url_for('cadastro') }}";
+            });
+        }
+
+        const btnPerfil = document.getElementById('btn-perfil');
+        if (btnPerfil) {
+            btnPerfil.addEventListener('click', function() {
+                document.getElementById('dropdown-perfil').classList.toggle('aberto');
+            });
+        }
     </script>
 </body>
 </html>

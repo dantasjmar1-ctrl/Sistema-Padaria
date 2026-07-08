@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Padaria Vitoria | Cadastro{% endblock %}
+{% block content %}
+
+<section class="container">
+    <div class="form-card">
+        <h1>Criar conta</h1>
+
+        <form method="POST" action="{{ url_for('cadastro') }}">
+            <div class="form-linha">
+                <div class="form-campo campo-grande">
+                    <label>Nome completo</label>
+                    <input type="text" name="nome" required>
+                </div>
+                <div class="form-campo">
+                    <label>Telefone</label>
+                    <input type="text" name="telefone" required>
+                </div>
+            </div>
+
+            <div class="form-linha">
+                <div class="form-campo campo-grande">
+                    <label>Email</label>
+                    <input type="email" name="email" required>
+                </div>
+                <div class="form-campo">
+                    <label>CPF</label>
+                    <input type="text" name="cpf" required>
+                </div>
+            </div>
+
+            <div class="form-linha">
+                <div class="form-campo">
+                    <label>Data de nascimento</label>
+                    <input type="date" name="data_nascimento" required>
+                </div>
+                <div class="form-campo">
+                    <label>Senha</label>
+                    <input type="password" name="senha" required>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-comprar btn-cadastrar">Cadastrar</button>
+        </form>
+    </div>
+</section>
+{% endblock %}
