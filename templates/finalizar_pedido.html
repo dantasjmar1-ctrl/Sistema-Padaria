@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% block title %}Padaria Vitoria | Finalizar Pedido{% endblock %}
+{% block content %}
+
+<section class="container">
+    <div class="form-card checkout-card">
+        <h1>Finalizar pedido</h1>
+
+        <div id="resumo-pedido" class="resumo-pedido"></div>
+
+        <form method="POST" action="{{ url_for('confirmar_pedido') }}" id="form-pedido">
+            <input type="hidden" name="itens_json" id="itens_json">
+
+            <h3>Tipo de entrega</h3>
+            <div class="opcoes-cards">
+                <label class="opcao-card selecionada">
+                    <input type="radio" name="tipo_entrega" value="entrega" checked>
+                    🚴 Entrega
+                </label>
+                <label class="opcao-card">
+                    <input type="radio" name="tipo_entrega" value="retirada">
+                    🏠 Retirada na loja
+                </label>
+            </div>
+
+            <div id="bloco-endereco">
+                <h3>Endereço de entrega</h3>
+                {% if enderecos %}
+                <div class="form-linha">
+                <div class="form-campo">
+                    <label>Escolha um endereço</label>
+                    <select name="id_endereco" id="select-endereco" style="display: none;">
+                        {% for e in enderecos %}
+                        <option value="{{ e.id_endereco }}">{{ e.rua }}, {{ e.numero }} - {{ e.bairro }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <div class="custom-select" id="custom-endereco">
+                        <button type="button" class="custom-select-botao">
+                            {{ enderecos[0].rua }}, {{ enderecos[0].numero }} - {{ enderecos[0].bairro }}
+                        </button>
+                        <div class="custom-select-lista">
+                            {% for e in enderecos %}
+                            <div class="custom-select-opcao" data-value="{{ e.id_endereco }}">{{ e.rua }}, {{ e.numero }} - {{ e.bairro }}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+                <p class="link-endereco"><a href="{{ url_for('novo_endereco') }}">+ Cadastrar novo endereço</a></p>
+                {% else %}
+                <p>Você ainda não tem endereço cadastrado. <a href="{{ url_for('novo_endereco') }}">Cadastrar endereço</a></p>
+                {% endif %}
+            </div>
+
+            <h3>Forma de pagamento</h3>
+            <div class="opcoes-cards">
+                <label class="opcao-card selecionada">
+                    <input type="radio" name="forma_pagamento" value="dinheiro" checked>
+                    💵 Dinheiro
+                </label>
+                <label class="opcao-card">
+                    <input type="radio" name="forma_pagamento" value="pix">
+                    📱 Pix
+                </label>
+                <label class="opcao-card">
+                    <input type="radio" name="forma_pagamento" value="cartao">
+                    💳 Cartão
+                </label>
+            </div>
+
+            <button type="submit" class="btn-comprar btn-cadastrar">Confirmar pedido</button>
+        </form>
+    </div>
+</section>
+
+<script>
+    const carrinho = JSON.parse(localStorage.getItem("carrinhoPadaria") || "[]");
+    document.getElementById("itens_json").value = JSON.stringify(carrinho);
+
+    const resumo = document.getElementById("resumo-pedido");
+    let total = 0;
+    resumo.innerHTML = carrinho.map(([nome, item]) => {
+        total += item.price * item.quantity;
+        return `<div class="resumo-linha"><span>${item.quantity}x ${item.name}</span><span>R$ ${(item.price * item.quantity).toFixed(2).replace(".", ",")}</span></div>`;
+    }).join("") + `<div class="resumo-linha resumo-total"><span>Total</span><span>R$ ${total.toFixed(2).replace(".", ",")}</span></div>`;
+
+    document.querySelectorAll('input[name="tipo_entrega"]').forEach((radio) => {
+        radio.addEventListener("change", () => {
+            document.getElementById("bloco-endereco").style.display =
+                document.querySelector('input[name="tipo_entrega"]:checked').value === "entrega" ? "block" : "none";
+        });
+    });
+
+    document.querySelectorAll('.opcao-card input[type="radio"]').forEach((input) => {
+        input.addEventListener("change", () => {
+            document.querySelectorAll(`input[name="${input.name}"]`).forEach((i) => {
+                i.closest(".opcao-card").classList.remove("selecionada");
+            });
+            input.closest(".opcao-card").classList.add("selecionada");
+        });
+    });
+
+    const customSelect = document.getElementById('custom-endereco');
+if (customSelect) {
+    const botao = customSelect.querySelector('.custom-select-botao');
+    const lista = customSelect.querySelector('.custom-select-lista');
+    const selectReal = document.getElementById('select-endereco');
+
+    botao.addEventListener('click', () => {
+        lista.classList.toggle('aberta');
+    });
+
+    customSelect.querySelectorAll('.custom-select-opcao').forEach((opcao) => {
+        opcao.addEventListener('click', () => {
+            botao.textContent = opcao.textContent;
+            selectReal.value = opcao.dataset.value;
+            lista.classList.remove('aberta');
+        });
+    });
+
+    document.addEventListener('click', (event) => {
+        if (!customSelect.contains(event.target)) {
+            lista.classList.remove('aberta');
+        }
+    });
+}
+</script>
+{% endblock %}

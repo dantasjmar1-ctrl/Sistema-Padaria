@@ -166,7 +166,7 @@ def inicio():
 def cardapio():
 
     cursor.execute("""
-        SELECT c.slug, p.nome, p.imagem, p.preco, p.unidade_venda
+        SELECT c.slug, p.nome, p.imagem, p.preco, p.unidade_venda, p.descricao
         FROM Produto p
         INNER JOIN Categoria c ON c.id_categoria = p.id_categoria
     """)
@@ -179,6 +179,7 @@ def cardapio():
             "imagem": row.imagem if row.imagem else "img/LOGO_SITE/padaria_interior.png",
             "preco": preco_formatado,
             "unidade_venda": row.unidade_venda,
+            "descricao": row.descricao,
         }
         produtos_por_categoria.setdefault(row.slug, []).append(produto)
 
@@ -308,5 +309,43 @@ def perfil():
 
     return render_template('perfil.html', cliente=cliente)
 
+@app.route('/finalizar-pedido')
+def finalizar_pedido():
+    if 'cliente_id' not in session:
+        return redirect(url_for('login'))
+    
+    cursor.execute("SELECT id_endereco, rua, numero, bairro FROM Endereco WHERE id_cliente = ?", session['cliente_id'])
+    enderecos = cursor.fetchall()
+
+    return render_template('finalizar_pedido.html', enderecos=enderecos)
+
+@app.route('/confirmar-pedido', methods=['POST'])
+def confirmar_pedido():
+    return "Em construção"
+
+@app.route('/novo-endereco', methods=['GET', 'POST'])
+def novo_endereco():
+    if 'cliente_id' not in session:
+        return redirect(url_for('login'))
+    
+    if request.method == 'POST':
+        cep = request.form['cep']
+        rua = request.form['rua']
+        numero = request.form['numero']
+        bairro = request.form['bairro']
+        cidade = request.form['cidade']
+        estado = request.form['estado']
+        complemento = request.form.get('complemento', '')
+        referencia = request.form.get('reference', '')
+
+        cursor.execute("""
+            INSERT INTO Endereco (id_cliente, cep, rua, numero, bairro, cidade, estado, complemento, referencia)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, session['cliente_id'], cep, rua, numero, bairro, cidade, estado, complemento, referencia)
+        conexao.commit()
+        
+        return redirect(url_for('finalizar_pedido'))
+    
+    return render_template ('novo_endereco.html')
 
 app.run(debug=True)

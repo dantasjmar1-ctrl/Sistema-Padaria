@@ -23,7 +23,21 @@
             {% if produto.descricao %}
             <p class="descricao-produto">{{ produto.descricao }}</p>
             {% endif %}
-            <button class="btn-comprar add-cart" type="button" data-name="{{ produto.nome }}" data-price="{{ produto.preco }}">Adicionar ao carrinho</button>
+            {% if produto.unidade_venda != 'peso' %}
+            <div class="qtd-control">
+                <button type="button" class="qtd-menos-card">-</button>
+                <span class="qtd-valor">1</span>
+                <button type="button" class="qtd-mais-card">+</button>
+            </div>
+            {% endif %}
+            {% if produto.unidade_venda == 'peso' %}
+            <select class="peso-select">
+                {% for g in range(100, 1050, 50) %}
+                <option value="{{ g }}">{{ g }}g</option>
+                {% endfor %}
+            </select>
+                {% endif %}
+            <button class="btn-comprar add-cart" type="button" data-name="{{ produto.nome }}" data-price="{{ produto.preco }}" data-unit="{{ produto.unidade_venda }}">Adicionar ao carrinho</button>
         </article>
         {% endfor %}
     </div>

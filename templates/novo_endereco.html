@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block title %}Padaria Vitoria | Novo Endereço{% endblock %}
+{% block content %}
+
+<section class="container">
+    <div class="form-card">
+        <h1>Cadastrar endereço</h1>
+
+        <form method="POST" action="{{ url_for('novo_endereco') }}">
+            <div class="form-linha">
+                <div class="form-campo">
+                    <label>CEP</label>
+                    <input type="text" name="cep" id="campo-cep" required>
+                </div>
+                <div class="form-campo campo-grande">
+                    <label>Rua</label>
+                    <input type="text" name="rua" id="campo-rua" readonly required>
+                </div>
+            </div>
+
+            <div class="form-linha">
+                <div class="form-campo">
+                    <label>Número</label>
+                    <input type="text" name="numero" required>
+                </div>
+                <div class="form-campo campo-grande">
+                    <label>Bairro</label>
+                    <input type="text" name="bairro" id="campo-bairro" readonly required>
+                </div>
+            </div>
+
+            <div class="form-linha">
+                <div class="form-campo">
+                    <label>Cidade</label>
+                    <input type="text" name="cidade" id="campo-cidade" readonly required>
+                </div>
+            <div class="form-campo">
+                <label>Estado</label>
+                <input type="text" name="estado" id="campo-estado" readonly required>
+            </div>
+        </div>
+
+            <div class="form-linha">
+                <div class="form-campo campo-grande">
+                    <label>Complemento (opcional)</label>
+                    <input type="text" name="complemento">
+                </div>
+                <div class="form-campo campo-grande">
+                    <label>Referência (opcional)</label>
+                    <input type="text" name="referencia">
+                </div>
+            </div>
+
+            <button type="submit" class="btn-comprar btn-cadastrar">Salvar endereço</button>
+        </form>
+    </div>
+</section>
+
+<script>
+    const campoCep = document.getElementById('campo-cep');
+    const campoRua = document.getElementById('campo-rua');
+    const campoBairro = document.getElementById('campo-bairro');
+    const campoCidade = document.getElementById('campo-cidade');
+    const campoEstado = document.getElementById('campo-estado');
+
+    function limparEndereco() {
+        campoRua.value = '';
+        campoBairro.value = '';
+        campoCidade.value = '';
+        campoEstado.value = '';
+    }
+
+    campoCep.addEventListener('blur', function() {
+        const cep = campoCep.value.replace(/\D/g, '');
+
+        if (cep.length !== 8) {
+            limparEndereco();
+            return;
+        }
+
+        fetch(`https://viacep.com.br/ws/${cep}/json/`)
+            .then(resposta => resposta.json())
+            .then(dados => {
+                if (dados.erro) {
+                    limparEndereco();
+                } else {
+                    campoRua.value = dados.logradouro;
+                    campoBairro.value = dados.bairro;
+                    campoCidade.value = dados.localidade;
+                    campoEstado.value = dados.uf;
+                }
+            });
+    });
+</script>
+
+{% endblock %}
