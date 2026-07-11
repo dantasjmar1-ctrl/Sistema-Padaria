@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}Padaria Vitoria | Pedido Confirmado{% endblock %}
+{% block content %}
+
+<section class="container pedido-confirmado-bg">
+    <div class="pedido-confirmado-wrap">
+
+        <div class="pedido-sucesso-topo">
+            <div class="pedido-sucesso-icone">
+                <svg viewBox="0 0 24 24" focusable="false">
+                    <path d="M20 6L9 17l-5-5"/>
+                </svg>
+            </div>
+            <h1>Pedido nº {{ pedido.id_pedido }} confirmado!</h1>
+            <p>Aguardando confirmação da padaria • ~{{ tempo_estimado }}</p>
+        </div>
+
+        <div class="pedido-info-card">
+            <div class="pedido-info-linha pedido-info-topo">
+                <span class="pedido-info-label">Status</span>
+                <span class="status-badge status-{{ pedido.status_pedido }}">{{ pedido.status_pedido | capitalize }}</span>
+            </div>
+            <div class="pedido-info-linha">
+                <span>{% if pedido.tipo_entrega == 'entrega' %}Entrega{% else %}Retirada{% endif %}</span>
+                <span class="pedido-info-valor">
+                    {% if pedido.tipo_entrega == 'entrega' %}
+                        {{ pedido.rua }}, {{ pedido.numero }}
+                    {% else %}
+                        Na loja
+                    {% endif %}
+                </span>
+            </div>
+            <div class="pedido-info-linha">
+                <span>Pagamento</span>
+                <span class="pedido-info-valor">{{ pedido.forma_pagamento | capitalize }}</span>
+            </div>
+        </div>
+
+        <div class="pedido-info-card">
+            <span class="pedido-info-label">Itens do pedido</span>
+            <div class="pedido-itens">
+                {% for item in itens %}
+                <div class="pedido-info-linha">
+                    <span>{{ item.quantidade }}x {{ item.nome }}</span>
+                    <span>R$ {{ "%.2f"|format(item.subtotal)|replace(".", ",") }}</span>
+                </div>
+                {% endfor %}
+                <div class="pedido-info-linha pedido-taxa">
+                    <span>Taxa de entrega</span>
+                    <span>R$ {{ "%.2f"|format(pedido.taxa_entrega)|replace(".", ",") }}</span>
+                </div>
+                <div class="pedido-info-linha pedido-total">
+                    <span>Total</span>
+                    <span>R$ {{ "%.2f"|format(pedido.valor_total)|replace(".", ",") }}</span>
+                </div>
+            </div>
+        </div>
+
+        <a href="{{ url_for('pedidos') }}" class="btn-comprar btn-cadastrar">Ver meus pedidos</a>
+    </div>
+</section>
+
+<script>
+    localStorage.removeItem("carrinhoPadaria");
+</script>
+{% endblock %}

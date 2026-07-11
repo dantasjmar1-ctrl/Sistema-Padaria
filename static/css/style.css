@@ -1424,3 +1424,134 @@ a {
 .custom-select-opcao:hover {
     background: #fff3e6;
 }
+.status-badge {
+    display: inline-block;
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.status-pendente {
+    background: #fff3e6;
+    color: #c85f00;
+}
+
+.status-confirmado {
+    background: #e6f4ea;
+    color: #1e7d32;
+}
+
+.status-recusado {
+    background: #fdeaea;
+    color: #c0392b;
+}
+.pedido-confirmado-bg {
+    background: #fff8f0 !important;
+}
+
+.pedido-confirmado-wrap {
+    max-width: 640px;
+    margin: 0 auto;
+}
+
+.pedido-sucesso-topo {
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+.pedido-sucesso-icone {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ff9a3c, #f77f00);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+    box-shadow: 0 8px 20px rgba(247, 127, 0, 0.3);
+}
+
+.pedido-sucesso-icone svg {
+    width: 34px;
+    height: 34px;
+    fill: none;
+    stroke: #fff;
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.pedido-sucesso-topo h1 {
+    font-size: 24px;
+    color: #2b2118;
+    margin: 0 0 6px;
+}
+
+.pedido-sucesso-topo p {
+    color: #6b5b4a;
+    font-size: 14px;
+    margin: 0;
+}
+
+.pedido-info-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+    text-align: left;
+}
+
+.pedido-info-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: #6b5b4a;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.pedido-info-linha {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-top: 1px solid #f0e6d6;
+    font-size: 14px;
+    color: #3a1f12;
+}
+
+.pedido-info-topo {
+    align-items: center;
+    border-top: none;
+    margin-bottom: 6px;
+    padding-top: 0;
+}
+
+.pedido-info-valor {
+    text-align: right;
+    max-width: 60%;
+}
+
+.pedido-itens {
+    margin-top: 12px;
+}
+
+.pedido-itens .pedido-info-linha:first-child {
+    border-top: none;
+}
+
+.pedido-taxa {
+    color: #6b5b4a;
+    border-top: 1px dashed #ead7c2;
+}
+
+.pedido-total {
+    padding-top: 12px;
+    margin-top: 4px;
+    font-weight: 800;
+    color: #2b2118;
+}
+
+.pedido-total span:last-child {
+    color: #d66b00;
+}

@@ -15,6 +15,15 @@ cursor = conexao.cursor()
 
 print("Conexão realizada com sucesso!")
 
+def verificar_pedidos_expirados():
+    cursor.execute("""
+        UPDATE Pedido
+        SET status_pedido = 'recusado', motivo_recusa = 'Tempo de confirmação expirado (15 minutos)'
+        WHERE status_pedido = 'pendente'
+        AND DATEDIFF(MINUTE, data_pedido, GETDATE()) > 15
+    """)
+    conexao.commit()
+
 CATEGORIAS = [
     {
         "slug": "paes-frescos",
@@ -283,6 +292,7 @@ def logout():
 def pedidos():
     if 'cliente_id' not in session:
         return redirect(url_for('login'))
+    verificar_pedidos_expirados()
     return render_template('pedidos.html')
 
 @app.route('/perfil', methods=['GET', 'POST'])
@@ -319,9 +329,95 @@ def finalizar_pedido():
 
     return render_template('finalizar_pedido.html', enderecos=enderecos)
 
+import json
+import re
+
 @app.route('/confirmar-pedido', methods=['POST'])
 def confirmar_pedido():
-    return "Em construção"
+    if 'cliente_id' not in session:
+        return redirect(url_for('login'))
+
+    itens_json = request.form['itens_json']
+    tipo_entrega = request.form['tipo_entrega']
+    id_endereco = request.form.get('id_endereco')
+    forma_pagamento = request.form['forma_pagamento']
+
+    itens = json.loads(itens_json)
+
+    valor_produto = sum(item[1]['price'] * item[1]['quantity'] for item in itens)
+    taxa_entrega = 5.00 if tipo_entrega == 'entrega' else 0.00
+    valor_total = valor_produto + taxa_entrega
+
+    id_endereco_final = id_endereco if tipo_entrega == 'entrega' else None
+
+    cursor.execute("""
+        INSERT INTO Pedido (id_cliente, id_endereco, tipo_entrega, status_pedido, valor_produto, taxa_entrega, valor_total, data_pedido)
+        VALUES (?, ?, ?, 'pendente', ?, ?, ?, GETDATE())
+    """, session['cliente_id'], id_endereco_final, tipo_entrega, valor_produto, taxa_entrega, valor_total)
+    conexao.commit()
+
+    cursor.execute("SELECT @@IDENTITY AS id")
+    id_pedido = cursor.fetchone().id
+
+    for nome_carrinho, item in itens:
+        nome_produto = re.sub(r' - \d+g$', '', item['name'])
+
+        cursor.execute("SELECT id_produto FROM Produto WHERE nome = ?", nome_produto)
+        produto = cursor.fetchone()
+
+        if produto:
+            subtotal = item['price'] * item['quantity']
+            cursor.execute("""
+                INSERT INTO ItemPedido (id_pedido, id_produto, quantidade, preco_unitario, subtotal)
+                VALUES (?, ?, ?, ?, ?)
+            """, id_pedido, produto.id_produto, item['quantity'], item['price'], subtotal)
+
+    cursor.execute("""
+        INSERT INTO Pagamento (id_pedido, forma_pagamento, status_pagamento)
+        VALUES (?, ?, 'pendente')
+    """, id_pedido, forma_pagamento)
+    conexao.commit()
+
+    return redirect(url_for('pedido_confirmado', id_pedido=id_pedido))
+
+@app.route('/pedido-confirmado/<int:id_pedido>')
+def pedido_confirmado(id_pedido):
+    if 'cliente_id' not in session:
+        return redirect(url_for('login'))
+    
+    verificar_pedidos_expirados()
+
+    cursor.execute("""
+        SELECT p.id_pedido, p.tipo_entrega, p.status_pedido, p.valor_produto,
+               p.taxa_entrega, p.valor_total, p.data_pedido,
+               e.rua, e.numero, e.bairro,
+               pg.forma_pagamento
+        FROM Pedido p
+        LEFT JOIN Endereco e ON e.id_endereco = p.id_endereco
+        LEFT JOIN Pagamento pg ON pg.id_pedido = p.id_pedido
+        WHERE p.id_pedido = ? AND p.id_cliente = ?
+    """, id_pedido, session['cliente_id'])
+    pedido = cursor.fetchone()
+
+    if not pedido:
+        return redirect(url_for('pedidos'))
+
+    cursor.execute("""
+        SELECT pr.nome, ip.quantidade, ip.preco_unitario, ip.subtotal
+        FROM ItemPedido ip
+        INNER JOIN Produto pr ON pr.id_produto = ip.id_produto
+        WHERE ip.id_pedido = ?
+    """, id_pedido)
+    itens = cursor.fetchall()
+
+    tempo_estimado = "40 a 50 minutos" if pedido.tipo_entrega == 'entrega' else "20 a 30 minutos"
+
+    return render_template(
+        'pedido_confirmado.html',
+        pedido=pedido,
+        itens=itens,
+        tempo_estimado=tempo_estimado,
+    )
 
 @app.route('/novo-endereco', methods=['GET', 'POST'])
 def novo_endereco():
