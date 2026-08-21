@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Padaria Vitoria | Editar Produto{% endblock %}
+{% block content %}
+
+<section class="container">
+    <div class="form-card">
+        <h1>Editar produto</h1>
+
+        <img src="{{ url_for('static', filename=produto.imagem) if produto.imagem else url_for('static', filename='img/LOGO_SITE/padaria_interior.png') }}" alt="{{ produto.nome }}" style="width: 160px; height: 160px; object-fit: cover; border-radius: 12px; margin: 0 auto 20px; display: block;">
+
+        <img src="{{ url_for('static', filename=produto.imagem) if produto.imagem else url_for('static', filename='img/LOGO_SITE/padaria_interior.png') }}" alt="{{ produto.nome }}" style="width: 160px; height: 160px; object-fit: cover; border-radius: 12px; margin: 0 auto 20px; display: block;" id="preview-foto">
+
+        <form method="POST" action="{{ url_for('editar_produto', id_produto=produto.id_produto) }}" enctype="multipart/form-data">
+            <div class="form-linha">
+                <div class="form-campo campo-grande">
+                    <label>Nome</label>
+                    <input type="text" name="nome" value="{{ produto.nome }}" required>
+                </div>
+                <div class="form-campo">
+                    <label>Preço</label>
+                    <input type="text" name="preco" value="{{ "%.2f"|format(produto.preco)|replace(".", ",") }}" required>
+                </div>
+            </div>
+
+            <div class="form-linha">
+                <div class="form-campo campo-grande">
+                    <label>Descrição (opcional)</label>
+                    <textarea name="descricao" style="width:100%; box-sizing:border-box; min-height:60px; border-radius:8px; border:1px solid #e6ddd0; padding:10px 12px; font-family:inherit;">{{ produto.descricao or '' }}</textarea>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-comprar btn-cadastrar">Salvar alterações</button>
+
+            <div class="form-linha">
+                <div class="form-campo campo-grande">
+                    <label>Trocar foto (opcional)</label>
+                    <input type="file" name="nova_foto" accept="image/*" id="input-foto">
+                </div>
+            </div>
+        </form>
+
+        <a href="{{ url_for('painel_produtos') }}" class="btn-link-simples" style="display:block; text-align:center; margin-top:12px;">← Voltar sem salvar</a>
+    </div>
+</section>
+{% endblock %}

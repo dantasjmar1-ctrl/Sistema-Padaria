@@ -1,0 +1,233 @@
+{% extends "base.html" %}
+{% block title %}Padaria Vitoria | Painel{% endblock %}
+{% block content %}
+
+<section class="container painel-container">
+<div class="painel-topo">
+    <div>
+        <h1>Painel da Padaria</h1>
+        <p>Olá, {{ session.funcionario_nome }}!</p>
+    </div>
+    <div class="painel-resumo">
+        <button type="button" id="btn-ativar-som" class="btn-comprar">🔔 Ativar som</button>
+        <a href="{{ url_for('painel_produtos') }}" class="btn-comprar">Gerenciar Produtos</a>
+        <span class="resumo-pill resumo-pendente">{{ pendentes|length }} pendente{{ 's' if pendentes|length != 1 }}</span>
+        <span class="resumo-pill resumo-andamento">{{ em_andamento|length }} em andamento</span>
+    </div>
+</div>
+
+    <div class="painel-abas">
+        <button type="button" class="aba-btn aba-ativa" data-aba="pendentes">Pendentes ({{ pendentes|length }})</button>
+        <button type="button" class="aba-btn" data-aba="andamento">Em andamento ({{ em_andamento|length }})</button>
+        <button type="button" class="aba-btn" data-aba="concluidos">Concluídos ({{ concluidos|length }})</button>
+        <button type="button" class="aba-btn" data-aba="recusados">Recusados ({{ recusados|length }})</button>
+    </div>
+
+    <div class="painel-aba-conteudo" id="aba-pendentes">
+        {% if pendentes %}
+        {% for pedido in pendentes %}
+        <div class="painel-pedido-card card-pendente">
+            <div class="painel-pedido-topo">
+                <strong>Pedido nº {{ pedido.id_pedido }}</strong>
+                <span class="status-badge status-{{ pedido.status_pedido }}">{{ pedido.status_pedido | replace('_', ' ') | capitalize }}</span>
+            </div>
+            <p>Cliente: {{ pedido.cliente_nome }} • {{ pedido.cliente_telefone }}</p>
+            <p>
+                {% if pedido.tipo_entrega == 'entrega' %}
+                    Entrega: {{ pedido.endereco }}
+                {% else %}
+                    Retirada na loja
+                {% endif %}
+            </p>
+            <div class="painel-itens">
+                {% for item in pedido.itens %}
+                <span>{{ item.quantidade }}x {{ item.nome }}</span>
+                {% endfor %}
+            </div>
+            <p><strong>Total: R$ {{ "%.2f"|format(pedido.valor_total)|replace(".", ",") }}</strong></p>
+
+            <div class="painel-acoes">
+                <form method="POST" action="{{ url_for('avancar_status', id_pedido=pedido.id_pedido) }}">
+                    <input type="hidden" name="novo_status" value="em_preparo">
+                    <button type="submit" class="btn-confirmar">Confirmar</button>
+                </form>
+
+                <button type="button" class="btn-recusar" onclick="document.getElementById('modal-recusa-{{ pedido.id_pedido }}').classList.add('aberto')">Recusar</button>
+            </div>
+
+            <div class="modal-overlay" id="modal-recusa-{{ pedido.id_pedido }}">
+                <div class="modal-caixa">
+                    <div class="modal-topo">
+                        <h2>Recusar Pedido nº {{ pedido.id_pedido }}</h2>
+                        <span class="modal-fechar" onclick="document.getElementById('modal-recusa-{{ pedido.id_pedido }}').classList.remove('aberto')">×</span>
+                    </div>
+                    <p class="modal-subtitulo">Explique o motivo para o cliente entender.</p>
+
+                    <form method="POST" action="{{ url_for('recusar_pedido', id_pedido=pedido.id_pedido) }}">
+                        <label>Motivo da recusa</label>
+                        <textarea name="motivo" required placeholder="Ex: Infelizmente o Pão Francês acabou hoje"></textarea>
+
+                        <label>Qual item está em falta? (opcional)</label>
+                        <select name="item_faltante" class="select-item-faltante" data-pedido="{{ pedido.id_pedido }}">
+                            <option value="">Nenhum item específico</option>
+                            {% for item in pedido.itens %}
+                            <option value="{{ item.id_item }}" data-categoria="{{ item.id_categoria }}" data-produto="{{ item.id_produto }}">{{ item.quantidade }}x {{ item.nome }}</option>    
+                            {% endfor %}
+                        </select>
+
+                        <label>Sugerir produto substituto (opcional)</label>
+                        <select name="produto_substituto" class="select-substituto" data-pedido="{{ pedido.id_pedido }}">
+                            <option value="">Selecione o item em falta primeiro</option>
+                        </select>
+
+                        <div class="modal-botoes">
+                            <button type="button" class="btn-modal-cancelar" onclick="document.getElementById('modal-recusa-{{ pedido.id_pedido }}').classList.remove('aberto')">Cancelar</button>
+                            <button type="submit" class="btn-recusar">Confirmar recusa</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <p class="painel-vazio">Nenhum pedido pendente no momento.</p>
+        {% endif %}
+    </div>
+
+    <div class="painel-aba-conteudo escondida" id="aba-andamento">
+        {% if em_andamento %}
+        {% for pedido in em_andamento %}
+        <div class="painel-pedido-card card-andamento">
+            <div class="painel-pedido-topo">
+                <strong>Pedido nº {{ pedido.id_pedido }}</strong>
+                <span class="status-badge status-{{ pedido.status_pedido }}">{{ pedido.status_pedido | replace('_', ' ') | capitalize }}</span>
+            </div>
+            <p>Cliente: {{ pedido.cliente_nome }} • {{ pedido.cliente_telefone }}</p>
+            <div class="painel-itens">
+                {% for item in pedido.itens %}
+                <span>{{ item.quantidade }}x {{ item.nome }}</span>
+                {% endfor %}
+            </div>
+
+            {% if pedido.proximo_valor %}
+            <form method="POST" action="{{ url_for('avancar_status', id_pedido=pedido.id_pedido) }}">
+                <input type="hidden" name="novo_status" value="{{ pedido.proximo_valor }}">
+                <button type="submit" class="btn-confirmar">{{ pedido.proximo_label }}</button>
+            </form>
+            {% endif %}
+        </div>
+        {% endfor %}
+        {% else %}
+        <p class="painel-vazio">Nenhum pedido em andamento.</p>
+        {% endif %}
+    </div>
+
+<div class="painel-aba-conteudo escondida" id="aba-concluidos">
+    {% if concluidos %}
+    {% for pedido in concluidos %}
+    <div class="painel-pedido-card card-finalizado">
+        <div class="painel-pedido-topo">
+            <strong>Pedido nº {{ pedido.id_pedido }}</strong>
+            <span class="status-badge status-{{ pedido.status_pedido }}">{{ pedido.status_pedido | replace('_', ' ') | capitalize }}</span>
+        </div>
+        <p>Cliente: {{ pedido.cliente_nome }}</p>
+    </div>
+    {% endfor %}
+    {% else %}
+    <p class="painel-vazio">Nenhum pedido concluído ainda.</p>
+    {% endif %}
+</div>
+
+<div class="painel-aba-conteudo escondida" id="aba-recusados">
+    {% if recusados %}
+    {% for pedido in recusados %}
+    <div class="painel-pedido-card card-recusado">
+        <div class="painel-pedido-topo">
+            <strong>Pedido nº {{ pedido.id_pedido }}</strong>
+            <span class="status-badge status-{{ pedido.status_pedido }}">{{ pedido.status_pedido | replace('_', ' ') | capitalize }}</span>
+        </div>
+        <p>Cliente: {{ pedido.cliente_nome }}</p>
+    </div>
+    {% endfor %}
+    {% else %}
+    <p class="painel-vazio">Nenhum pedido recusado.</p>
+    {% endif %}
+</div>
+</section>
+
+<script>
+    const todosProdutos = [
+        {% for produto in todos_produtos %}
+        { id: {{ produto.id_produto }}, nome: "{{ produto.nome }}", categoria: {{ produto.id_categoria }} },
+        {% endfor %}
+    ];
+
+    document.querySelectorAll('.select-item-faltante').forEach((selectItem) => {
+        selectItem.addEventListener('change', function() {
+            const opcaoSelecionada = this.options[this.selectedIndex];
+            const categoria = opcaoSelecionada.dataset.categoria;
+            const produtoAtual = opcaoSelecionada.dataset.produto;
+            const pedidoId = this.dataset.pedido;
+            const selectSubstituto = document.querySelector(`.select-substituto[data-pedido="${pedidoId}"]`);
+
+            selectSubstituto.innerHTML = '<option value="">Nenhum</option>';
+
+            if (categoria) {
+                const produtosFiltrados = todosProdutos.filter(p => p.categoria == categoria && p.id != produtoAtual);
+                produtosFiltrados.forEach((produto) => {
+                    const option = document.createElement('option');
+                    option.value = produto.id;
+                    option.textContent = produto.nome;
+                    selectSubstituto.appendChild(option);
+                });
+            }
+        });
+    });
+
+    document.querySelectorAll('.aba-btn').forEach((botao) => {
+        botao.addEventListener('click', function() {
+            document.querySelectorAll('.aba-btn').forEach((b) => b.classList.remove('aba-ativa'));
+            this.classList.add('aba-ativa');
+
+            document.querySelectorAll('.painel-aba-conteudo').forEach((conteudo) => {
+                conteudo.classList.add('escondida');
+            });
+
+            const abaAlvo = this.dataset.aba;
+            document.getElementById('aba-' + abaAlvo).classList.remove('escondida');
+        });
+    });
+let somAtivado = false;
+const audioNotificacao = new Audio("{{ url_for('static', filename='sounds/notificacao.wav') }}");
+
+document.getElementById('btn-ativar-som').addEventListener('click', function() {
+    audioNotificacao.play().then(() => {
+        audioNotificacao.pause();
+        audioNotificacao.currentTime = 0;
+        somAtivado = true;
+        this.textContent = "🔔 Som ativado!";
+        this.disabled = true;
+    });
+});
+
+let totalPendentesAnterior = {{ pendentes|length }};
+
+function verificarNovosPedidos() {
+    fetch('/painel/verificar-novos')
+        .then((resposta) => resposta.json())
+        .then((dados) => {
+            if (dados.total_pendentes > totalPendentesAnterior) {
+                if (somAtivado) {
+                    audioNotificacao.play();
+                }
+                setTimeout(() => {
+                    location.reload();
+                }, 3000);
+            }
+            totalPendentesAnterior = dados.total_pendentes;
+        });
+}
+
+setInterval(verificarNovosPedidos, 10000);
+</script>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Padaria Vitoria | Gerenciar Produtos{% endblock %}
+{% block content %}
+
+<section class="container painel-container">
+    <div class="painel-topo">
+        <div>
+            <h1>Gerenciar Produtos</h1>
+            <p>{{ total }} produtos cadastrados</p>
+        </div>
+        <div style="display: flex; gap: 10px;">
+            <a href="{{ url_for('novo_produto') }}" class="btn-comprar">+ Novo Produto</a>
+            <a href="{{ url_for('painel') }}" class="btn-comprar">← Voltar ao painel</a>
+        </div>
+    </div>
+
+    {% for categoria_nome, produtos in produtos_por_categoria.items() %}
+    <div class="categoria-bloco">
+        <div class="categoria-topo">
+            <h2>{{ categoria_nome }}</h2>
+        </div>
+        <div class="cards produtos-grid">
+            {% for produto in produtos %}
+            <article class="card produto-card {% if produto.disponibilidade == 'esgotado' %}produto-esgotado{% endif %}">
+            <h3>{{ produto.nome }}</h3>
+            <img src="{{ url_for('static', filename=produto.imagem) if produto.imagem else url_for('static', filename='img/LOGO_SITE/padaria_interior.png') }}" alt="{{ produto.nome }}">
+            <span class="preco">R$ {{ "%.2f"|format(produto.preco)|replace(".", ",") }}</span>
+            {% if produto.disponibilidade == 'esgotado' %}
+            <span class="status-badge status-recusado">Esgotado</span>
+            {% endif %}
+            <div class="painel-acoes-produto">
+                <a href="{{ url_for('editar_produto', id_produto=produto.id_produto) }}" class="btn-comprar">Editar</a>
+                <form method="POST" action="{{ url_for('alternar_disponibilidade', id_produto=produto.id_produto) }}">
+                    <button type="submit" class="btn-opcao-recusa">
+                        {% if produto.disponibilidade == 'disponivel' %}Marcar esgotado{% else %}Disponibilizar{% endif %}
+                    </button>
+                </form>
+            </div>
+        </article>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+</section>
+{% endblock %}

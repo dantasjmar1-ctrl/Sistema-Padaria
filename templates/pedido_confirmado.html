@@ -7,32 +7,130 @@
 
         <div class="pedido-sucesso-topo">
             <div class="pedido-sucesso-icone">
-                <svg viewBox="0 0 24 24" focusable="false">
-                    <path d="M20 6L9 17l-5-5"/>
-                </svg>
+                    <svg viewBox="0 0 24 24" focusable="false">
+                        <path d="M20 6L9 17l-5-5"/>
+                    </svg>
             </div>
             <h1>Pedido nº {{ pedido.id_pedido }} confirmado!</h1>
-            <p>Aguardando confirmação da padaria • ~{{ tempo_estimado }}</p>
+            <p>{{ status_texto }} {% if pedido.status_pedido == 'pendente' %}• ~{{ tempo_estimado }}{% endif %}</p>
+
+            {% if pedido.status_pedido == 'pendente' %}
+            <div class="aviso-urgente" id="aviso-urgente">
+                <p>⚠️ Este pedido será cancelado automaticamente em <strong id="contador-tempo">15:00</strong> se não for confirmado pela padaria.</p>
+                <a href="https://wa.me/5511918468385?text=Ol%C3%A1!%20Gostaria%20de%20confirmar%20meu%20pedido%20n%C2%BA%20{{ pedido.id_pedido }}%20na%20Padaria%20Vit%C3%B3ria." target="_blank" class="btn-whatsapp">
+                    📱 Falar no WhatsApp agora
+                </a>
+            </div>
+            {% endif %}
         </div>
+
+        {% if pedido.status_pedido == 'recusado' and info_recusa and info_recusa.produto_faltante_nome %}
+        <div class="pedido-card-recibo aviso-substituto">
+            <div class="modal-topo" style="padding: 16px 20px 0;">
+                <h2 style="font-size: 16px; color: #c0392b;">😕 Pedido recusado</h2>
+            </div>
+            <div class="pedido-card-corpo">
+                <p style="margin: 0 0 12px; font-size: 14px; color: #3a1f12;">{{ info_recusa.motivo_recusa }}</p>
+                <p style="margin: 0; font-size: 13px; color: #6b5b4a;">
+                    Item em falta: <strong>{{ info_recusa.produto_faltante_nome }}</strong>
+                </p>
+                {% if info_recusa.substituto_nome %}
+                <p style="margin: 8px 0 0; font-size: 13px; color: #6b5b4a;">
+                    Sugestão da padaria: <strong>{{ info_recusa.substituto_nome }}</strong> (R$ {{ "%.2f"|format(info_recusa.substituto_preco)|replace(".", ",") }})
+                </p>
+                {% endif %}
+
+                <div class="opcoes-recusa">
+                {% if info_recusa.substituto_nome %}
+                <form method="POST" action="{{ url_for('aceitar_substituto', id_pedido=pedido.id_pedido) }}">
+                    <button type="submit" class="btn-opcao-recusa btn-opcao-principal">
+                        ✅ Aceitar {{ info_recusa.substituto_nome }}
+                    </button>
+                </form>
+                {% endif %}
+
+                {% if outros_produtos %}
+                <form method="POST" action="{{ url_for('escolher_outro_produto', id_pedido=pedido.id_pedido) }}">
+                    <select name="produto_escolhido" required id="select-produto-troca">
+                        <option value="">Ou escolha outro produto</option>
+                        {% for produto in outros_produtos %}
+                        <option value="{{ produto.id_produto }}">{{ produto.nome }} - R$ {{ "%.2f"|format(produto.preco)|replace(".", ",") }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="button" id="btn-ver-todos" class="btn-link-simples">Ver todos os produtos</button>
+                    <button type="submit" class="btn-opcao-recusa">Trocar por este</button>
+                </form>
+                {% endif %}
+
+                <form method="POST" action="{{ url_for('continuar_sem_item', id_pedido=pedido.id_pedido) }}">
+                    <button type="submit" class="btn-opcao-recusa btn-opcao-secundaria">Continuar sem esse item</button>
+                </form>
+
+                <button type="button" class="btn-opcao-recusa btn-opcao-cancelar" onclick="this.closest('.pedido-card-recibo').style.display='none'">Manter cancelado</button>
+            </div>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if pedido.status_pedido not in ['pendente', 'recusado'] %}
+        <div class="pedido-info-card">
+            <div class="barra-progresso" id="barra-progresso" data-tipo-entrega="{{ pedido.tipo_entrega }}">
+                <div class="barra-linha-fundo"></div>
+                <div class="barra-linha-ativa" id="barra-linha-ativa"></div>
+
+                <div class="barra-etapa" data-status="em_preparo">
+                    <div class="barra-icone">👨‍🍳</div>
+                    <span>Em preparo</span>
+                </div>
+                <div class="barra-etapa" data-status="pronto">
+                    <div class="barra-icone">🥖</div>
+                    <span>Pronto</span>
+                </div>
+                {% if pedido.tipo_entrega == 'entrega' %}
+                <div class="barra-etapa" data-status="saiu_para_entrega">
+                    <div class="barra-icone">🛵</div>
+                    <span>Saiu p/ entrega</span>
+                </div>
+                <div class="barra-etapa" data-status="entregue">
+                    <div class="barra-icone">🏠</div>
+                    <span>Entregue</span>
+                </div>
+                {% else %}
+                <div class="barra-etapa" data-status="aguardando_retirada">
+                    <div class="barra-icone">🏪</div>
+                    <span>Pronto p/ retirar</span>
+                </div>
+                <div class="barra-etapa" data-status="retirado">
+                    <div class="barra-icone">✅</div>
+                    <span>Retirado</span>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
 
         <div class="pedido-info-card">
             <div class="pedido-info-linha pedido-info-topo">
                 <span class="pedido-info-label">Status</span>
-                <span class="status-badge status-{{ pedido.status_pedido }}">{{ pedido.status_pedido | capitalize }}</span>
+                <span class="status-badge status-{{ pedido.status_pedido }}">{{ pedido.status_pedido | replace('_', ' ') | capitalize }}</span>
             </div>
-            <div class="pedido-info-linha">
-                <span>{% if pedido.tipo_entrega == 'entrega' %}Entrega{% else %}Retirada{% endif %}</span>
-                <span class="pedido-info-valor">
-                    {% if pedido.tipo_entrega == 'entrega' %}
-                        {{ pedido.rua }}, {{ pedido.numero }}
-                    {% else %}
-                        Na loja
-                    {% endif %}
-                </span>
-            </div>
-            <div class="pedido-info-linha">
-                <span>Pagamento</span>
-                <span class="pedido-info-valor">{{ pedido.forma_pagamento | capitalize }}</span>
+        </div>
+
+        <div class="pedido-card-recibo">
+            <div class="pedido-card-cabecalho">Detalhes do pedido</div>
+            <div class="pedido-card-corpo">
+                <div class="pedido-recibo-grid">
+                    <span>{% if pedido.tipo_entrega == 'entrega' %}Entrega{% else %}Retirada{% endif %}</span>
+                    <span>
+                        {% if pedido.tipo_entrega == 'entrega' %}
+                            🚴 {{ pedido.rua }}, {{ pedido.numero }}
+                        {% else %}
+                            🏪 Na loja
+                        {% endif %}
+                    </span>
+                    <span>Pagamento</span>
+                    <span>💵 {{ pedido.forma_pagamento | capitalize }}</span>
+                </div>
             </div>
         </div>
 
@@ -41,8 +139,8 @@
             <div class="pedido-itens">
                 {% for item in itens %}
                 <div class="pedido-info-linha">
-                    <span>{{ item.quantidade }}x {{ item.nome }}</span>
-                    <span>R$ {{ "%.2f"|format(item.subtotal)|replace(".", ",") }}</span>
+                        <span>{{ item.quantidade }}x {{ item.nome }}</span>
+                        <span>R$ {{ "%.2f"|format(item.subtotal)|replace(".", ",") }}</span>
                 </div>
                 {% endfor %}
                 <div class="pedido-info-linha pedido-taxa">
@@ -62,5 +160,91 @@
 
 <script>
     localStorage.removeItem("carrinhoPadaria");
+
+    const contadorEl = document.getElementById('contador-tempo');
+    if (contadorEl) {
+        const dataPedido = new Date("{{ pedido.data_pedido.isoformat() }}");
+        const prazoFinal = new Date(dataPedido.getTime() + 15 * 60000);
+
+        function atualizarContador() {
+            const agora = new Date();
+            const restante = prazoFinal - agora;
+
+            if (restante <= 0) {
+                contadorEl.textContent = "0:00";
+                location.reload();
+                return;
+            }
+
+            const minutos = Math.floor(restante / 60000);
+            const segundos = Math.floor((restante % 60000) / 1000);
+            contadorEl.textContent = `${minutos}:${segundos.toString().padStart(2, '0')}`;
+        }
+
+        atualizarContador();
+        setInterval(atualizarContador, 1000);
+    }
+
+    const barraProgresso = document.getElementById('barra-progresso');
+    if (barraProgresso) {
+        const tipoEntrega = barraProgresso.dataset.tipoEntrega;
+        const etapasEntrega = ['em_preparo', 'pronto', 'saiu_para_entrega', 'entregue'];
+        const etapasRetirada = ['em_preparo', 'pronto', 'aguardando_retirada', 'retirado'];
+        const etapas = tipoEntrega === 'entrega' ? etapasEntrega : etapasRetirada;
+
+        function atualizarBarra(statusAtual) {
+            const indiceAtual = etapas.indexOf(statusAtual);
+            const linhaAtiva = document.getElementById('barra-linha-ativa');
+            const porcentagem = indiceAtual <= 0 ? 0 : (indiceAtual / (etapas.length - 1)) * 100;
+            linhaAtiva.style.width = porcentagem + '%';
+
+            document.querySelectorAll('.barra-etapa').forEach((el) => {
+                const status = el.dataset.status;
+                const indice = etapas.indexOf(status);
+                el.classList.remove('concluida', 'atual');
+                if (indice < indiceAtual) {
+                    el.classList.add('concluida');
+                } else if (indice === indiceAtual) {
+                    el.classList.add('atual');
+                    el.querySelector('.barra-icone').classList.add('etapa-atual');
+                }
+            });
+        }
+
+        atualizarBarra("{{ pedido.status_pedido }}");
+
+        setInterval(() => {
+            fetch(`/pedido-status/{{ pedido.id_pedido }}`)
+                .then((resposta) => resposta.json())
+                .then((dados) => {
+                    if (dados.status && dados.status !== barraProgresso.dataset.statusAtual) {
+                        barraProgresso.dataset.statusAtual = dados.status;
+                        atualizarBarra(dados.status);
+                    }
+                });
+        }, 10000);
+    }
+
+    const btnVerTodos = document.getElementById('btn-ver-todos');
+    if (btnVerTodos) {
+        const todosOsProdutos = [
+            {% for produto in todos_produtos_geral %}
+            { id: {{ produto.id_produto }}, nome: "{{ produto.nome }}", preco: {{ produto.preco }} },
+            {% endfor %}
+        ];
+
+        btnVerTodos.addEventListener('click', function() {
+            const select = document.getElementById('select-produto-troca');
+            select.innerHTML = '<option value="">Escolha um produto</option>';
+            todosOsProdutos.forEach((produto) => {
+                const precoFormatado = produto.preco.toFixed(2).replace('.', ',');
+                const option = document.createElement('option');
+                option.value = produto.id;
+                option.textContent = `${produto.nome} - R$ ${precoFormatado}`;
+                select.appendChild(option);
+            });
+            btnVerTodos.style.display = 'none';
+        });
+    }
 </script>
 {% endblock %}

@@ -3,6 +3,23 @@
 {% block content %}
 
 <section class="container">
+    {% if pedidos %}
+    <h1>Meus pedidos</h1>
+    <div class="lista-pedidos">
+        {% for pedido in pedidos %}
+        <a href="{{ url_for('pedido_confirmado', id_pedido=pedido.id_pedido) }}" class="pedido-resumo-card">
+            <div>
+                <strong>Pedido nº {{ pedido.id_pedido }}</strong>
+                <span class="pedido-resumo-data">{{ pedido.data_pedido.strftime('%d/%m/%Y às %H:%M') }}</span>
+            </div>
+            <div class="pedido-resumo-direita">
+                <span class="status-badge status-{{ pedido.status_pedido }}">{{ pedido.status_pedido | replace('_', ' ') | capitalize }}</span>
+                <strong>R$ {{ "%.2f"|format(pedido.valor_total)|replace(".", ",") }}</strong>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+    {% else %}
     <div class="estado-vazio">
         <div class="estado-vazio-icone">
             <svg viewBox="0 0 24 24" focusable="false">
@@ -15,5 +32,6 @@
         <p>Você ainda não fez nenhum pedido por aqui. Que tal dar uma olhada no cardápio?</p>
         <a href="{{ url_for('cardapio') }}" class="btn-comprar">Ver cardápio</a>
     </div>
+    {% endif %}
 </section>
 {% endblock %}

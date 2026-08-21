@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Padaria Vitoria | Login Funcionário{% endblock %}
+{% block content %}
+
+<section class="container">
+    <div class="form-card">
+        <h1>Painel da Padaria</h1>
+
+        {% if erro %}
+        <p class="erro-login">{{ erro }}</p>
+        {% endif %}
+
+        <form method="POST" action="{{ url_for('login_funcionario') }}" autocomplete="off">
+            <div class="form-linha">
+                <div class="form-campo">
+                    <label>Email</label>
+                    <input type="text" name="email_func" autocomplete="off" required>
+                </div>
+                <div class="form-campo">
+                    <label>Senha</label>
+                    <input type="text" name="senha_func" autocomplete="off" required style="-webkit-text-security: disc;">
+                </div>
+            </div>
+
+            <button type="submit" class="btn-comprar btn-cadastrar">Entrar</button>
+        </form>
+    </div>
+</section>
+{% endblock %}

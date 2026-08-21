@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Padaria Vitoria | Novo Produto{% endblock %}
+{% block content %}
+
+<section class="container">
+    <div class="form-card">
+        <h1>Novo produto</h1>
+
+        <form method="POST" action="{{ url_for('novo_produto') }}" enctype="multipart/form-data">
+            <div class="form-linha">
+                <div class="form-campo campo-grande">
+                    <label>Nome</label>
+                    <input type="text" name="nome" required>
+                </div>
+                <div class="form-campo">
+                    <label>Preço</label>
+                    <input type="text" name="preco" placeholder="Ex: 5,90" required>
+                </div>
+            </div>
+
+            <div class="form-linha">
+                <div class="form-campo campo-grande">
+                    <label>Categoria</label>
+                    <select name="id_categoria" required>
+                        {% for categoria in categorias %}
+                        <option value="{{ categoria.id_categoria }}">{{ categoria.nome }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-campo">
+                    <label>Vendido por</label>
+                    <select name="unidade_venda">
+                        <option value="unidade">Unidade</option>
+                        <option value="peso">Peso (kg)</option>
+                    </select>
+                    <a href="{{ url_for('nova_categoria') }}" class="btn-link-simples">+ Criar nova categoria</a>
+                </div>
+            </div>
+
+            <div class="form-linha">
+                <div class="form-campo campo-grande">
+                    <label>Descrição (opcional)</label>
+                    <textarea name="descricao" style="width:100%; box-sizing:border-box; min-height:60px; border-radius:8px; border:1px solid #e6ddd0; padding:10px 12px; font-family:inherit;"></textarea>
+                </div>
+            </div>
+
+            <div class="form-linha">
+                <div class="form-campo campo-grande">
+                    <label>Foto (opcional)</label>
+                    <input type="file" name="nova_foto" accept="image/*">
+                </div>
+            </div>
+
+            <button type="submit" class="btn-comprar btn-cadastrar">Criar produto</button>
+        </form>
+
+        <a href="{{ url_for('painel_produtos') }}" class="btn-link-simples" style="display:block; text-align:center; margin-top:12px;">← Cancelar</a>
+    </div>
+</section>
+{% endblock %}
