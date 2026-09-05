@@ -83,25 +83,87 @@ Para os funcionários, o sistema disponibiliza recursos para gerenciamento de pr
 
 ---
 
-## 📁 Estrutura do repositório
+## Estrutura do repositório
 
 A estrutura atual do projeto está organizada da seguinte forma:
 
 ```text
 Padaria-Vitoria
+├── imagens
 ├── meu_script.sql
-├── estático
-├── modelos
+├── static
+├── templates
 ├── App.py
 └── README.md
 ```
-
 
 ---
 
 ## Telas do Sistema
 
-As imagens das principais telas do sistema serão adicionadas futuramente.
+<table>
+
+<tr>
+<td align="center">
+<b>Tela Inicial</b><br>
+<img src="imagens/tela_inicial.jpeg" width="420">
+</td>
+
+<td align="center">
+<b>Cadastro</b><br>
+<img src="imagens/cadastro.jpeg" width="420">
+</td>
+</tr>
+
+<tr>
+<td align="center">
+<b>Cardápio</b><br>
+<img src="imagens/cardapio.jpeg" width="420">
+</td>
+
+<td align="center">
+<b>Carrinho</b><br>
+<img src="imagens/carrinho.jpeg" width="420">
+</td>
+</tr>
+
+<tr>
+<td align="center">
+<b>Checkout</b><br>
+<img src="imagens/checkout.jpeg" width="420">
+</td>
+
+<td align="center">
+<b>Acompanhamento de Pedido</b><br>
+<img src="imagens/acompanhamento_pedido.jpeg" width="420">
+</td>
+</tr>
+
+<tr>
+<td align="center">
+<b>Tela Admin</b><br>
+<img src="imagens/tela_admin.jpeg" width="420">
+</td>
+
+<td align="center">
+<b>Painel Admin</b><br>
+<img src="imagens/painel_admin.jpeg" width="420">
+</td>
+</tr>
+
+<tr>
+<td align="center">
+<b>Gerenciamento Admin</b><br>
+<img src="imagens/gerenciamento_admin.jpeg" width="420">
+</td>
+
+<td align="center">
+<b>Relatórios</b><br>
+<img src="imagens/relatorios.jpeg" width="420">
+</td>
+</tr>
+
+</table>
 
 ---
 
@@ -111,7 +173,7 @@ O sistema será disponibilizado futuramente por meio de um link público.
 
 Após a publicação, será possível acessar a aplicação diretamente pelo link abaixo:
 
-🔗 **Acessar o sistema:** *link será disponibilizado futuramente*
+**Acessar o sistema:** *link será disponibilizado futuramente*
 
 ---
 
@@ -128,6 +190,9 @@ Trabalho desenvolvido como parte das atividades de extensão do curso de **Anál
 
 ## Status do projeto
 
-🚧 **Em desenvolvimento**
+**Em desenvolvimento**
+
+O projeto está em processo de desenvolvimento e poderá receber novas funcionalidades, ajustes e melhorias ao longo de sua implementação.
+
 
 O projeto está em processo de desenvolvimento e poderá receber novas funcionalidades, ajustes e melhorias ao longo de sua implementação.
