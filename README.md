@@ -141,19 +141,19 @@ Padaria-Vitoria
 
 <tr>
 <td align="center">
-<b>Tela Admin</b><br>
+<b>Tela Administrativa</b><br>
 <img src="imagens/tela_admin.jpeg" width="420">
 </td>
 
 <td align="center">
-<b>Painel Admin</b><br>
+<b>Painel Administrativo</b><br>
 <img src="imagens/painel_admin.jpeg" width="420">
 </td>
 </tr>
 
 <tr>
 <td align="center">
-<b>Gerenciamento Admin</b><br>
+<b>Gerenciamento Administrativo</b><br>
 <img src="imagens/gerenciamento_admin.jpeg" width="420">
 </td>
 
@@ -194,5 +194,3 @@ Trabalho desenvolvido como parte das atividades de extensão do curso de **Anál
 
 O projeto está em processo de desenvolvimento e poderá receber novas funcionalidades, ajustes e melhorias ao longo de sua implementação.
 
-
-O projeto está em processo de desenvolvimento e poderá receber novas funcionalidades, ajustes e melhorias ao longo de sua implementação.
