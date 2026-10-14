@@ -173,7 +173,7 @@ O sistema será disponibilizado futuramente por meio de um link público.
 
 Após a publicação, será possível acessar a aplicação diretamente pelo link abaixo:
 
-**Acessar o sistema:** *link será disponibilizado futuramente*
+**Acessar o sistema: https://padariavitoriajf.com.br**
 
 ---
 
@@ -187,10 +187,3 @@ Projeto desenvolvido por:
 Trabalho desenvolvido como parte das atividades de extensão do curso de **Análise e Desenvolvimento de Sistemas – UNIP**.
 
 ---
-
-## Status do projeto
-
-**Em desenvolvimento**
-
-O projeto está em processo de desenvolvimento e poderá receber novas funcionalidades, ajustes e melhorias ao longo de sua implementação.
-
