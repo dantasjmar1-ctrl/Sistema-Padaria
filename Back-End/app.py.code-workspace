@@ -1,0 +1,22 @@
+{
+	"folders": [
+		{
+			"path": "../Codigos/Back-End/Controllers"
+		},
+		{
+			"path": "../Codigos/Back-End/Data"
+		},
+		{
+			"path": "../Codigos/Back-End/Database"
+		},
+		{
+			"path": "../Codigos/Back-End/Migrations"
+		},
+		{
+			"path": "../Codigos/Back-End/Models"
+		},
+		{
+			"path": "../Codigos/Back-End/Services"
+		}
+	]
+}
