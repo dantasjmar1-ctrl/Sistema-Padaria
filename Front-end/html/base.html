@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Padaria Vitoria{% endblock %}</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/LOGO_SITE/V (64 x 64 px)1.png') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="{% block body_class %}{% endblock %}">
+
+    <header class="site-header">
+        <div class="header-left">
+        <a href="{{ url_for('inicio') }}" class="logo-link" aria-label="Padaria Vitoria">
+            <img src="{{ url_for('static', filename='img/LOGO_SITE/2.png') }}" class="logo" alt="Padaria Vitoria">
+        </a>
+
+        <form class="search-box" action="{{ url_for('cardapio') }}" method="get">
+            <label for="busca">Buscar produtos</label>
+            <input id="busca" type="text" name="busca" placeholder="Buscar produtos...">
+            <button type="submit" aria-label="Buscar">⌕</button>
+        </form>
+        </div>
+
+        <div class="header-right">
+        <nav class="main-menu" aria-label="Menu principal">
+    
+            <a href="{{ url_for('inicio') }}">Início</a>
+            <a href="{{ url_for('cardapio') }}">Cardápio</a>
+            {% if session.funcionario_id %}
+            <a href="{{ url_for('painel') }}">Pedidos</a>
+            {% elif session.cliente_id %}
+            <a href="{{ url_for('pedidos') }}">Pedidos</a>
+            <a href="{{ url_for('nova_encomenda') }}">Encomendas</a>
+            {% endif %}
+
+            {% if session.cliente_nome %}
+                <span class="saudacao-nome">Olá, {{ session.cliente_nome }}</span>
+            {% elif session.funcionario_nome %}
+                <span class="saudacao-nome">👨‍🍳 {{ session.funcionario_nome }}</span>
+            {% else %}
+                <button type="button" id="btn-login">Login</button>
+                <button type="button" id="btn-cadastro">Cadastro</button>
+            {% endif %}
+        </nav>
+
+        {% if session.cliente_nome %}
+        <div class="menu-notificacoes">
+            <button type="button" id="btn-notificacoes" class="btn-sino" aria-label="Notificações">
+            🔔
+            {% if notificacoes_nao_lidas > 0 %}
+            <span class="sino-count">{{ notificacoes_nao_lidas }}</span>
+            {% endif %}
+        </button>
+            <div class="dropdown-notificacoes" id="dropdown-notificacoes">
+                <div class="notificacoes-lista" id="notificacoes-lista">
+                    <p class="notificacoes-vazio">Carregando...</p>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if not session.funcionario_id %}
+        <button class="cart-toggle" type="button" aria-label="Abrir carrinho">
+            <span class="cart-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false">
+                    <path d="M3 4h2l2.5 11h10l2-7H7"/>
+                    <circle cx="10" cy="20" r="1.8"/>
+                    <circle cx="18" cy="20" r="1.8"/>
+                </svg>
+            </span>
+            <span class="cart-count">0</span>
+        </button>
+        {% endif %}
+
+        {% if session.cliente_nome or session.funcionario_nome %}
+        <div class="menu-perfil">
+            <button type="button" id="btn-perfil" class="btn-hamburguer" aria-label="Menu da conta">☰</button>
+            <div class="dropdown-perfil" id="dropdown-perfil">
+                {% if session.cliente_nome %}
+                <a href="{{ url_for('minhas_encomendas') }}">Minhas encomendas</a>
+                <a href="{{ url_for('favoritos') }}">Meus favoritos</a>
+                <a href="{{ url_for('perfil') }}">Editar perfil</a>
+                <a href="{{ url_for('pedidos') }}">Meus pedidos</a>
+                {% elif session.funcionario_nome %}
+                <a href="{{ url_for('painel') }}">Ver Pedidos</a>
+                <a href="{{ url_for('painel_produtos') }}">Gerenciar Produtos</a>
+                <a href="{{ url_for('painel_avaliacoes') }}">Avaliações</a>
+                <a href="{{ url_for('painel_relatorios') }}">Relatórios</a>
+                <a href="{{ url_for('painel_cupons') }}">Cupons</a>
+                <a href="{{ url_for('novo_funcionario') }}">Cadastrar Funcionário</a>
+                {% endif %}
+                <a href="{{ url_for('logout') }}">Sair</a>
+            </div>
+        </div>
+        {% endif %}
+        </div>
+    </header>
+
+    {% if not session.funcionario_id %}
+    <aside class="cart-panel" aria-label="Carrinho de compras">
+        <div class="cart-header">
+            <div>
+                <span class="cart-kicker">Seu pedido</span>
+                <h2>Carrinho</h2>
+            </div>
+            <button class="cart-close" type="button" aria-label="Fechar carrinho">×</button>
+        </div>
+
+        <div class="cart-items">
+            <p class="cart-empty">Seu carrinho está vazio.</p>
+        </div>
+
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total</span>
+                <strong>R$ 0,00</strong>
+            </div>
+            <button class="cart-finish" type="button">Finalizar pedido</button>
+        </div>
+    </aside>
+    <div class="cart-overlay"></div>
+    {% endif %}
+
+    {% if session.funcionario_id %}
+    <a href="{{ url_for('painel') }}" class="btn-flutuante-painel">
+    📋 Ver Pedidos
+    </a>
+    {% endif %}
+
+    {% if pedido_ativo and request.endpoint != 'pedido_confirmado' %}
+    <a href="{{ url_for('pedido_confirmado', id_pedido=pedido_ativo.id_pedido) }}" class="btn-flutuante-painel" style="bottom: 24px; right: 24px;">
+        📦 Acompanhar pedido
+    </a>
+    {% endif %}
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+        {% with boas_vindas = get_flashed_messages(category_filter=['cadastro_ok']) %}
+        {% if boas_vindas %}
+        <div class="modal-overlay aberto modal-boas-vindas" id="modal-boas-vindas" role="dialog" aria-modal="true" aria-labelledby="titulo-boas-vindas">
+            <div class="modal-caixa">
+                <div class="boas-vindas-icone" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><polyline points="5 13 10 18 19 7"/></svg>
+                </div>
+                <h2 id="titulo-boas-vindas">Cadastro realizado!</h2>
+                <p>Olá, {{ boas_vindas[0] }}! Sua conta foi criada com sucesso e você já entrou no site.</p>
+                <div class="modal-botoes">
+                    <a href="{{ url_for('cardapio') }}" class="btn-comprar">Ver o cardápio</a>
+                    <button type="button" class="btn-modal-cancelar" id="btn-fechar-boas-vindas">Fechar</button>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% endwith %}
+
+        <div class="banner-cookies" id="banner-cookies">
+            <p>
+                🍪 Usamos cookies para manter você conectado e guardar seu carrinho de compras.
+                Ao continuar navegando, você concorda com nossa
+                <a href="{{ url_for('termos_uso') }}">Política de Cookies</a>.
+            </p>
+            <button type="button" id="btn-aceitar-cookies" class="btn-comprar">Entendi</button>
+        </div>
+
+        <footer class="footer">
+        <div class="footer-inner">
+            <span class="footer-brand-small">Padaria</span>
+            <strong><span>Vitória</span></strong>
+            <span class="footer-detalhe"></span>
+            <p>© 2026 Padaria Vitória - Todos os direitos reservados</p>
+            <div class="footer-links">
+                <a href="{{ url_for('politica_privacidade') }}">Política de Privacidade</a>
+                <span>•</span>
+                <a href="{{ url_for('termos_uso') }}">Termos de Uso</a>
+            </div>
+        </div>
+    </footer>
+    <script src="{{ url_for('static', filename='js/cart.js') }}"></script>
+    <script>
+        const btnLogin = document.getElementById('btn-login');
+        if (btnLogin) {
+            btnLogin.addEventListener('click', function() {
+                window.location.href = "{{ url_for('login') }}";
+            });
+        }
+
+        const btnCadastro = document.getElementById('btn-cadastro');
+        if (btnCadastro) {
+            btnCadastro.addEventListener('click', function() {
+                window.location.href = "{{ url_for('cadastro') }}";
+            });
+        }
+
+        const btnPerfil = document.getElementById('btn-perfil');
+        if (btnPerfil) {
+            btnPerfil.addEventListener('click', function() {
+                document.getElementById('dropdown-perfil').classList.toggle('aberto');
+            });
+        }
+
+        document.querySelectorAll('.btn-olho-senha').forEach((botao) => {
+            botao.addEventListener('click', function() {
+                const campo = this.previousElementSibling;
+                const olhoAberto = this.querySelector('.icone-olho-aberto');
+                const olhoFechado = this.querySelector('.icone-olho-fechado');
+
+                if (campo.type === 'password') {
+                    campo.type = 'text';
+                    olhoAberto.style.display = 'none';
+                    olhoFechado.style.display = 'block';
+                } else {
+                    campo.type = 'password';
+                    olhoAberto.style.display = 'block';
+                    olhoFechado.style.display = 'none';
+                }
+            });
+        });
+
+        const btnNotificacoes = document.getElementById('btn-notificacoes');
+        if (btnNotificacoes) {
+            const dropdown = document.getElementById('dropdown-notificacoes');
+            const lista = document.getElementById('notificacoes-lista');
+
+            function carregarNotificacoes() {
+                fetch('/notificacoes')
+                    .then((r) => r.json())
+                    .then((dados) => {
+                        if (dados.notificacoes.length === 0) {
+                            lista.innerHTML = '<p class="notificacoes-vazio">Nenhuma notificação ainda.</p>';
+                            return;
+                        }
+                        lista.innerHTML = dados.notificacoes.map((n) => `
+                            <a href="/pedido-confirmado/${n.id_pedido}" class="notificacao-item ${n.lida ? '' : 'nao-lida'}" data-id="${n.id}">
+                                ${n.mensagem}
+                                <span class="notificacao-data">${n.data}</span>
+                            </a>
+                        `).join('');
+
+                        lista.querySelectorAll('.notificacao-item').forEach((item) => {
+                            item.addEventListener('click', () => {
+                                fetch(`/notificacoes/${item.dataset.id}/marcar-lida`, { method: 'POST' });
+                            });
+                        });
+                    });
+            }
+
+            btnNotificacoes.addEventListener('click', () => {
+                dropdown.classList.toggle('aberto');
+                if (dropdown.classList.contains('aberto')) {
+                    carregarNotificacoes();
+                }
+            });
+
+            document.addEventListener('click', (event) => {
+                if (!btnNotificacoes.closest('.menu-notificacoes').contains(event.target)) {
+                    dropdown.classList.remove('aberto');
+                }
+            });
+        }
+
+        const bannerCookies = document.getElementById('banner-cookies');
+        if (bannerCookies) {
+            if (localStorage.getItem('cookiesAceitos') === 'true') {
+                bannerCookies.classList.add('escondido');
+            }
+
+            document.getElementById('btn-aceitar-cookies').addEventListener('click', function() {
+                localStorage.setItem('cookiesAceitos', 'true');
+                bannerCookies.classList.add('escondido');
+            });
+        }
+
+        // Máscara de dinheiro — digita só números, o campo
+        // formata sozinho tipo caixa registradora (0,00 -> vai empurrando)
+        function aplicarMascaraDinheiro(input) {
+            function formatar(valorAtual) {
+                let digitos = valorAtual.replace(/\D/g, '');
+                digitos = digitos.padStart(3, '0');
+                const centavos = digitos.slice(-2);
+                let reais = digitos.slice(0, -2).replace(/^0+(?=\d)/, '');
+                if (reais === '') reais = '0';
+                return reais + ',' + centavos;
+            }
+
+            input.value = formatar(input.value);
+
+            input.addEventListener('input', function() {
+                this.value = formatar(this.value);
+                this.setSelectionRange(this.value.length, this.value.length);
+            });
+
+            input.addEventListener('focus', function() {
+                this.setSelectionRange(this.value.length, this.value.length);
+            });
+        }
+
+        document.querySelectorAll('input[name="preco"], input[name="preco_promocional"], input[name="valor_minimo_pedido"]').forEach(aplicarMascaraDinheiro);
+
+        // Pop-up de boas-vindas depois do cadastro: fecha pelo botão,
+        // clicando fora ou com a tecla Esc
+        const modalBoasVindas = document.getElementById('modal-boas-vindas');
+        if (modalBoasVindas) {
+            const fecharBoasVindas = () => modalBoasVindas.remove();
+            const btnFecharBV = document.getElementById('btn-fechar-boas-vindas');
+            btnFecharBV.addEventListener('click', fecharBoasVindas);
+            modalBoasVindas.addEventListener('click', (e) => {
+                if (e.target === modalBoasVindas) fecharBoasVindas();
+            });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') fecharBoasVindas();
+            });
+            btnFecharBV.focus();
+        }
+    </script>
+
+    <!-- Widget oficial VLibras (governo) — tradução do site para Libras.
+         Não interfere em nenhum outro script da página. -->
+    <div vw class="enabled">
+        <div vw-access-button class="active"></div>
+        <div vw-plugin-wrapper>
+            <div class="vw-plugin-top-wrapper"></div>
+        </div>
+    </div>
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <script>
+        new window.VLibras.Widget('https://vlibras.gov.br/app');
+    </script>
+</body>
+</html>

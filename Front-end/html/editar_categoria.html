@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Padaria Vitoria | Editar Categoria{% endblock %}
+{% block content %}
+
+<section class="container">
+    <div class="form-card">
+        <h1>Editar categoria</h1>
+
+        {% if categoria.imagem %}
+        <img src="{{ url_for('static', filename=categoria.imagem) }}" alt="{{ categoria.nome }}" style="width: 160px; height: 160px; object-fit: cover; border-radius: 12px; margin: 0 auto 20px; display: block;">
+        {% endif %}
+
+        <form method="POST" action="{{ url_for('editar_categoria', id_categoria=categoria.id_categoria) }}" enctype="multipart/form-data">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <div class="form-linha">
+                <div class="form-campo campo-grande">
+                    <label>Nome da categoria</label>
+                    <input type="text" name="nome" value="{{ categoria.nome }}" required>
+                </div>
+            </div>
+
+            <div class="form-linha">
+                <div class="form-campo campo-grande">
+                    <label>Slug (identificador na URL, sem espaço ou acento)</label>
+                    <input type="text" name="slug" value="{{ categoria.slug }}" required>
+                </div>
+            </div>
+
+            <div class="form-linha">
+                <div class="form-campo campo-grande">
+                    <label>Texto de apresentação</label>
+                    <input type="text" name="texto" value="{{ categoria.texto or '' }}">
+                </div>
+            </div>
+
+            <div class="form-linha">
+                <div class="form-campo campo-grande">
+                    <label>Trocar imagem (opcional)</label>
+                    <input type="file" name="imagem" accept="image/*">
+                </div>
+            </div>
+
+            <button type="submit" class="btn-comprar btn-cadastrar">Salvar alterações</button>
+        </form>
+
+        <a href="{{ url_for('painel_produtos') }}" class="btn-link-simples" style="display:block; text-align:center; margin-top:12px;">← Voltar sem salvar</a>
+    </div>
+</section>
+{% endblock %}

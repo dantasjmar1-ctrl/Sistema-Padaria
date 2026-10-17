@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}Padaria Vitoria | Detalhes do Pedido{% endblock %}
+{% block content %}
+
+<section class="container painel-container">
+    <div class="painel-topo">
+        <div>
+            <h1>Pedido nº {{ pedido.id_pedido }}</h1>
+            <p>{{ pedido.data_pedido.strftime('%d/%m/%Y às %H:%M') }}</p>
+        </div>
+        <a href="{{ url_for('painel') }}" class="btn-comprar">← Voltar ao painel</a>
+    </div>
+
+    <div class="pedido-card-recibo">
+        <div class="pedido-card-cabecalho">Status</div>
+        <div class="pedido-card-corpo">
+            <span class="status-badge status-{{ pedido.status_pedido }}">{{ pedido.status_pedido | replace('_', ' ') | capitalize }}</span>
+            {% if pedido.motivo_recusa %}
+            <p style="margin-top: 10px; font-size: 14px; color: #6b5b4a;"><strong>Motivo:</strong> {{ pedido.motivo_recusa }}</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="pedido-card-recibo">
+        <div class="pedido-card-cabecalho">Cliente</div>
+        <div class="pedido-card-corpo">
+            <div class="pedido-recibo-grid">
+                <span>Nome</span>
+                <span>{{ pedido.cliente_nome }}</span>
+                <span>Telefone</span>
+                <span>{{ pedido.cliente_telefone }}</span>
+                <span>{% if pedido.tipo_entrega == 'entrega' %}Entrega{% else %}Retirada{% endif %}</span>
+                <span>
+                    {% if pedido.tipo_entrega == 'entrega' %}
+                        {{ pedido.rua }}, {{ pedido.numero }} - {{ pedido.bairro }}
+                    {% else %}
+                        Na loja
+                    {% endif %}
+                </span>
+                <span>Pagamento</span>
+                <span>{{ pedido.forma_pagamento | capitalize if pedido.forma_pagamento else 'Não informado' }}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="pedido-card-recibo">
+        <div class="pedido-card-cabecalho">Itens do pedido</div>
+        <div class="pedido-card-corpo pedido-itens-lista">
+            {% for item in itens %}
+            <div class="pedido-item-linha">
+                <span><strong class="pedido-item-qtd">{{ item.quantidade }}×</strong>&nbsp; {{ item.nome }}</span>
+                <span>R$ {{ "%.2f"|format(item.subtotal)|replace(".", ",") }}</span>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="pedido-card-rodape">
+            <div class="pedido-recibo-linha-pequena">
+                <span>Taxa de entrega</span>
+                <span>R$ {{ "%.2f"|format(pedido.taxa_entrega)|replace(".", ",") }}</span>
+            </div>
+            <div class="pedido-recibo-linha-total">
+                <span>Total</span>
+                <span>R$ {{ "%.2f"|format(pedido.valor_total)|replace(".", ",") }}</span>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

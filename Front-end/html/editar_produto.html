@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}Padaria Vitoria | Editar Produto{% endblock %}
+{% block content %}
+
+<section class="container">
+    <div class="form-card">
+        <h1>Editar produto</h1>
+
+        <img src="{{ url_for('static', filename=produto.imagem) if produto.imagem else url_for('static', filename='img/LOGO_SITE/padaria_interior.png') }}" alt="{{ produto.nome }}" style="width: 160px; height: 160px; object-fit: cover; border-radius: 12px; margin: 0 auto 20px; display: block;">
+
+        <img src="{{ url_for('static', filename=produto.imagem) if produto.imagem else url_for('static', filename='img/LOGO_SITE/padaria_interior.png') }}" alt="{{ produto.nome }}" style="width: 160px; height: 160px; object-fit: cover; border-radius: 12px; margin: 0 auto 20px; display: block;" id="preview-foto">
+
+        <form method="POST" action="{{ url_for('editar_produto', id_produto=produto.id_produto) }}" enctype="multipart/form-data">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <div class="form-linha">
+                <div class="form-campo campo-grande">
+                    <label>Nome</label>
+                    <input type="text" name="nome" value="{{ produto.nome }}" required>
+                </div>
+                <div class="form-campo">
+                    <label>Preço</label>
+                    <input type="text" name="preco" inputmode="numeric" value="{{ "%.2f"|format(produto.preco)|replace(".", ",") }}" required>
+                </div>
+            </div>
+
+            <div class="form-linha">
+                <div class="form-campo campo-grande">
+                    <label>Categoria</label>
+                    <select name="id_categoria" required>
+                        {% for categoria in categorias %}
+                        <option value="{{ categoria.id_categoria }}" {% if categoria.id_categoria == produto.id_categoria %}selected{% endif %}>{{ categoria.nome }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-linha">
+                <div class="form-campo">
+                    <label>
+                        <input type="checkbox" name="promocao_ativa" value="1" {% if produto.promocao_ativa %}checked{% endif %} style="width: auto; margin-right: 8px;">
+                        Ativar promoção
+                    </label>
+                </div>
+                <div class="form-campo campo-grande">
+                    <label>Preço promocional</label>
+                    <input type="text" name="preco_promocional" inputmode="numeric" value="{{ "%.2f"|format(produto.preco_promocional)|replace(".", ",") if produto.preco_promocional else '' }}" placeholder="Digite só números">
+                </div>
+            </div>
+
+            <div class="form-linha">
+                <div class="form-campo campo-grande">
+                    <label>
+                        <input type="checkbox" name="exige_qtd_minima" value="1" {% if produto.exige_qtd_minima %}checked{% endif %} style="width: auto; margin-right: 8px;">
+                        Encomenda exige mínimo de 30 unidades
+                    </label>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-comprar btn-cadastrar">Salvar alterações</button>
+
+            <div class="form-linha">
+                <div class="form-campo campo-grande">
+                    <label>Trocar foto (opcional)</label>
+                    <input type="file" name="nova_foto" accept="image/*" id="input-foto">
+                </div>
+            </div>
+        </form>
+
+        <a href="{{ url_for('painel_produtos') }}" class="btn-link-simples" style="display:block; text-align:center; margin-top:12px;">← Voltar sem salvar</a>
+    </div>
+</section>
+{% endblock %}
