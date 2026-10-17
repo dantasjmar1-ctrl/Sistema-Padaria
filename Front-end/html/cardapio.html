@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block title %}Padaria Vitoria | Cardápio{% endblock %}
+
+{% block content %}
+<section class="page-hero cardapio-page-hero">
+    <div class="trigo-decor">
+        <img src="{{ url_for('static', filename='img/decor/trigo.png') }}" alt="">
+    </div>
+    <div class="pao-decor">
+        <img src="{{ url_for('static', filename='img/decor/pao.png') }}" alt="">
+    </div>
+    <h1>Cardápio</h1>
+    <p>Produtos organizados por categoria para facilitar a escolha.</p>
+</section>
+
+<section class="container cardapio-container">
+    {% for categoria in categorias %}
+    <div class="categoria-bloco" id="{{ categoria.slug }}">
+        <div class="categoria-topo">
+            <div>
+                <h2>{{ categoria.titulo }}</h2>
+                <p>{{ categoria.texto }}</p>
+            </div>
+            <a href="{{ url_for('categoria', slug=categoria.slug) }}" class="link-categoria">Ver somente esta categoria</a>
+        </div>
+
+        <div class="cards produtos-grid">
+            {% for produto in produtos_por_categoria[categoria.slug] %}
+            <article class="card produto-card">
+                {% if session.funcionario_id %}
+                <a href="{{ url_for('editar_produto', id_produto=produto.id_produto) }}" class="btn-editar-flutuante" title="Editar produto">✏️</a>
+                {% endif %}
+                <img src="{{ url_for('static', filename=produto.imagem) }}" alt="{{ produto.nome }}">
+                <div class="produto-info">
+                    <h3>{{ produto.nome }}</h3>
+                    <p class="descricao-produto">{{ produto.descricao or '' }}</p>
+                    {% if produto.promocao_ativa and produto.preco_promocional %}
+                    <div class="preco-promocional-wrap">
+                        <span class="preco-riscado">R$ {{ produto.preco }}</span>
+                        <span class="preco promocao">R$ {{ produto.preco_promocional }}{% if produto.unidade_venda == 'peso' %}/kg{% endif %}</span>
+                    </div>
+                    {% else %}
+                    <span class="preco">R$ {{ produto.preco }}{% if produto.unidade_venda == 'peso' %}/kg{% endif %}</span>
+                    {% endif %}
+                    {% if not session.funcionario_id %}
+                    {% if produto.unidade_venda != 'peso' %}
+                    <div class="qtd-control">
+                        <button type="button" class="qtd-menos-card">-</button>
+                        <span class="qtd-valor">1</span>
+                        <button type="button" class="qtd-mais-card">+</button>
+                    </div>
+                    {% endif %}
+                    {% if produto.unidade_venda == 'peso' %}
+                    <select class="peso-select">
+                        {% for g in range(100, 1050, 50) %}
+                        <option value="{{ g }}">{{ g }}g</option>
+                        {% endfor %}
+                    </select>
+                    {% endif %}
+                    {% endif %}
+                </div>
+                {% if not session.funcionario_id %}
+                <button class="btn-comprar add-cart" type="button" data-name="{{ produto.nome }}" data-price="{{ produto.preco_promocional if produto.promocao_ativa and produto.preco_promocional else produto.preco }}" data-unit="{{ produto.unidade_venda }}">Adicionar ao carrinho</button>
+                {% endif %}
+            </article>
+            {% endfor %}
+
+            <!-- só admin: card de atalho pra cadastrar produto -->
+            {% if session.funcionario_id %}
+            <a href="{{ url_for('novo_produto') }}" class="card produto-card card-adicionar-produto">
+                <span class="card-adicionar-icone">+</span>
+                <span>Adicionar produto</span>
+            </a>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</section>
+
+<script>
+// Alinha à esquerda qualquer card que sobre sozinho no final de uma linha
+// (não mexe no carrinho nem em nenhuma outra função — só ajuste visual)
+function alinharCardsSozinhos() {
+    document.querySelectorAll('.produtos-grid').forEach(function (grid) {
+        var cards = Array.prototype.filter.call(grid.children, function (el) {
+            return el.classList.contains('produto-card');
+        });
+        cards.forEach(function (c) { c.style.marginRight = ''; });
+
+        var linhas = {};
+        cards.forEach(function (c) {
+            var topo = c.offsetTop;
+            if (!linhas[topo]) linhas[topo] = [];
+            linhas[topo].push(c);
+        });
+
+        Object.keys(linhas).forEach(function (topo) {
+            var linha = linhas[topo];
+            if (linha.length === 1) {
+                linha[0].style.marginRight = 'auto';
+            }
+        });
+    });
+}
+
+window.addEventListener('load', alinharCardsSozinhos);
+
+var alinharTimeout;
+window.addEventListener('resize', function () {
+    clearTimeout(alinharTimeout);
+    alinharTimeout = setTimeout(alinharCardsSozinhos, 150);
+});
+</script>
+{% endblock %}

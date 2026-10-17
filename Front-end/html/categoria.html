@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Padaria Vitoria | {{ categoria.titulo }}{% endblock %}
+
+{% block content %}
+<section class="page-hero categoria-hero">
+    <img src="{{ url_for('static', filename=categoria.imagem) }}" alt="{{ categoria.titulo }}">
+    <div>
+        <h1>{{ categoria.titulo }}</h1>
+        <p>{{ categoria.texto }}</p>
+        <a href="{{ url_for('cardapio') }}" class="btn-comprar">Voltar ao cardápio</a>
+    </div>
+</section>
+
+<section class="container categoria-produtos-secao">
+    <div class="cards produtos-grid">
+        {% for produto in produtos %}
+        <article class="card produto-card">
+            {% if session.funcionario_id %}
+             <a href="{{ url_for('editar_produto', id_produto=produto.id_produto) }}" class="btn-editar-flutuante" title="Editar produto">✏️</a>
+             {% endif %}
+            <h3>{{ produto.nome }}</h3>
+            <img src="{{ url_for('static', filename=produto.imagem) }}" alt="{{ produto.nome }}">
+            <p>Produto selecionado da categoria {{ categoria.titulo }}.</p>
+            {% if produto.promocao_ativa and produto.preco_promocional %}
+            <div class="preco-promocional-wrap">
+                <span class="preco-riscado">R$ {{ produto.preco }}</span>
+                <span class="preco promocao">R$ {{ produto.preco_promocional }}{% if produto.unidade_venda == 'peso' %}/kg{% endif %}</span>
+            </div>
+            {% else %}
+            <span class="preco">R$ {{ produto.preco }}{% if produto.unidade_venda == 'peso' %}/kg{% endif %}</span>
+            {% endif %}
+                {% if produto.descricao %}
+            <p class="descricao-produto">{{ produto.descricao }}</p>
+            {% endif %}
+            {% if not session.funcionario_id %}
+            {% if produto.unidade_venda != 'peso' %}
+            <div class="qtd-control">
+                <button type="button" class="qtd-menos-card">-</button>
+                <span class="qtd-valor">1</span>
+                <button type="button" class="qtd-mais-card">+</button>
+            </div>
+            {% endif %}
+            {% if produto.unidade_venda == 'peso' %}
+            <select class="peso-select">
+                {% for g in range(100, 1050, 50) %}
+                <option value="{{ g }}">{{ g }}g</option>
+                {% endfor %}
+            </select>
+                {% endif %}
+                
+                <button class="btn-comprar add-cart" type="button" data-name="{{ produto.nome }}" data-price="{{ produto.preco_promocional if produto.promocao_ativa and produto.preco_promocional else produto.preco }}" data-unit="{{ produto.unidade_venda }}">Adicionar ao carrinho</button>
+            {% endif %}
+        </article>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

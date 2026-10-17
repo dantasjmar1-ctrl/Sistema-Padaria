@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Padaria Vitoria | Meus Favoritos{% endblock %}
+{% block content %}
+
+<section class="container">
+    <div class="page-hero">
+        <h1>Meus favoritos</h1>
+    </div>
+
+    {% if produtos %}
+    <div class="cards produtos-grid">
+        {% for produto in produtos %}
+        <article class="card produto-card">
+            <h3>{{ produto.nome }}</h3>
+            <img src="{{ url_for('static', filename=produto.imagem) if produto.imagem else url_for('static', filename='img/LOGO_SITE/padaria_interior.png') }}" alt="{{ produto.nome }}">
+            <span class="preco">R$ {{ "%.2f"|format(produto.preco)|replace(".", ",") }}{% if produto.unidade_venda == 'peso' %}/kg{% endif %}</span>
+
+            {% if produto.unidade_venda != 'peso' %}
+            <div class="qtd-control">
+                <button type="button" class="qtd-menos-card">-</button>
+                <span class="qtd-valor">1</span>
+                <button type="button" class="qtd-mais-card">+</button>
+            </div>
+            {% endif %}
+            {% if produto.unidade_venda == 'peso' %}
+            <select class="peso-select">
+                {% for g in range(100, 1050, 50) %}
+                <option value="{{ g }}">{{ g }}g</option>
+                {% endfor %}
+            </select>
+            {% endif %}
+            <button class="btn-comprar add-cart" type="button" data-name="{{ produto.nome }}" data-price="{{ produto.preco }}" data-unit="{{ produto.unidade_venda }}">Adicionar ao carrinho</button>
+        </article>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="estado-vazio">
+        <div class="estado-vazio-icone">
+            <svg viewBox="0 0 24 24" focusable="false">
+                <path d="M12 21s-7-4.35-9.5-9C.5 8 2.5 4 6.5 4c2 0 3.5 1 5.5 3 2-2 3.5-3 5.5-3 4 0 6 4 4 8-2.5 4.65-9.5 9-9.5 9z"/>
+            </svg>
+        </div>
+        <h1>Você ainda não tem favoritos</h1>
+        <p>Compre o mesmo produto 2 vezes ou mais, e ele aparece aqui automaticamente!</p>
+        <a href="{{ url_for('cardapio') }}" class="btn-comprar">Ver cardápio</a>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}
